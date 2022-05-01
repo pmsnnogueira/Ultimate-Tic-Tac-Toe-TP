@@ -5,6 +5,12 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+typedef struct dados{
+    int nTab;
+    char **array;
+    
+}dados;
+
 
 // Inicializa o gerador de numeros aleatorios.
 // Esta funcao deve ser chamada apenas uma vez no inicio da execucao do programa

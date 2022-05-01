@@ -9,14 +9,17 @@
 
 int main(void){
 //Variaveis
-    char **matriz = NULL;
+    //char **matriz = NULL;
     int opcaoMenu;
-
-
+    struct dados *matriz;
+    
 //Main
 
+    //Inicializar o initRandom()
+    initRandom();
+
     //Criar a matriz dinamica
-    matriz = criaMatriz(LINHAS , COLUNAS);
+    matriz = criaMatriz();
     if(matriz == NULL){
         printf("Erro na alocação de memória!\n");
         return (1);
@@ -24,17 +27,29 @@ int main(void){
 
 
     while(1){
-        opcaoMenu = printMenu();
 
+        //Escolha do menu
+        opcaoMenu = printMenu();
         if(opcaoMenu == 3){
             printf("\nSAIR...\n");
             break;
         }
+
         switch(opcaoMenu){
+            //Jogar com um amigo
+            case 1:
+                mostraMatriz(matriz,LINHAS ,COLUNAS);
+                putchar('\n');
 
 
+
+            break;
+
+            //Jogar com o computador
+            case 2:
+
+            break;
         }
-
     }
 
 
