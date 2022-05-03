@@ -122,9 +122,11 @@ int menuInicial(){
 
 int printMenuInical(){
     int opcao;
-    char string[2];
-
+    char string[255];
+  
     while(1){
+
+        //apagarEcra();
         printf("\n############ Menu ############\n");
         printf("# 1 - Jogar com amigo        #\n");
         printf("# 2 - Jogar com o computador #\n");
@@ -133,15 +135,18 @@ int printMenuInical(){
         printf("##############################\n");
 
         printf("Escolha: ");
-        fgets(string,sizeof(opcao),stdin);
+        
+    
+        fgets(string,sizeof(string)-1,stdin);
+        string[strlen(string)-1] = '\0';
         opcao = atoi(string);
         
         putchar('\n');   
         if(opcao > 0 && opcao < 5)
             return (opcao);
 
-       // apagarEcra();
-        printf("\nEscolha uma opcao entre (1 e 2)");
+      
+        printf("\nEscolha uma opcao entre (1 e 4)");
     }
 
 }
@@ -150,10 +155,12 @@ int printMenuInical(){
 
 int jogarAmigo(struct dados *tab , int *turno){
     int opcao;
-    char string[2];
+    char string[255];
     int miniTabuleiro , x , y;
 
     int jogador = 1;
+
+    int flag = 0;
 
     while(1){
             if(*turno != 0)
@@ -164,7 +171,11 @@ int jogarAmigo(struct dados *tab , int *turno){
             printf("#############################\n");
 
             printf("Escolha: ");
-            fgets(string,sizeof(opcao),stdin);
+
+            fgets(string,sizeof(string)-1,stdin);
+            string[strlen(string)-1] = '\0';
+     
+ 
             opcao = atoi(string);
             
             putchar('\n');   
@@ -184,12 +195,16 @@ int jogarAmigo(struct dados *tab , int *turno){
                         *-----*-----*-----*\n");
 
                         printf("\nIntroduza o mini tabuleiro a jogar: ");
-                        fgets(string,sizeof(miniTabuleiro),stdin);
-                        miniTabuleiro = atoi(string);               
+                       
+                        fgets(string,sizeof(string)-1,stdin);
+                        string[strlen(string)-1] = '\0';
+                        miniTabuleiro = atoi(string);      
+                        
                         if(miniTabuleiro >= 0 && miniTabuleiro <= 8)    //Validações de tabuleiro
                             break;
 
                         printf("\nIntroduza um mini Tabuleiro válido (entre 0 e 8)\n");
+  
                    }
                 }   //Se não for o primeiro turno
                 (*turno)++;
@@ -201,26 +216,32 @@ int jogarAmigo(struct dados *tab , int *turno){
                 }while((x > 0 && x < 2) && (y > 0 && y < 2));*/
 
 
-                escolhe_jogada(tab , &jogador , miniTabuleiro);
+                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro);
 
 
             }
         }
 }
 
-void escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
+int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
 {
 	int pos;
     int N = 3;
+    
+    char string[2];
 
-	printf("\nÉ a vez do jogador %d\n", *jogador);
+	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador,miniTabuleiro);
 	do{
         //mostraMatriz(tab,9,9);
-		printf("Posição: ");
-		scanf(" %d", &pos);
+        *string = "";
+		printf("Posição para colocar peca: ");
+
+		fgets(string,sizeof(pos),stdin);
+        pos = atoi(string);
+
 	}while(pos<1 || pos>N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
 
-	if(jogador == 1)
+	if(*jogador == 1)
 			tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'X';
 		else
 			tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'O';
@@ -230,7 +251,7 @@ void escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
     else
         *jogador = 1;
 
-    //return ();
+    return (pos);
 
 }
 
