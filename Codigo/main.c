@@ -25,19 +25,15 @@ int main(void){
         return (1);
     }
 
+    //MenuInicial
+    opcaoMenu = menuInicial();
+
 
     while(1){
-
-        //Escolha do menu
-        opcaoMenu = printMenu();
-        if(opcaoMenu == 3){
-            printf("\nSAIR...\n");
-            break;
-        }
-
         switch(opcaoMenu){
             //Jogar com um amigo
             case 1:
+                jogarAmigo();
                 mostraMatriz(matriz,LINHAS ,COLUNAS);
                 putchar('\n');
 

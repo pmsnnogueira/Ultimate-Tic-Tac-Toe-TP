@@ -26,6 +26,7 @@ struct dados* criaMatriz(){
         p[i].array = malloc(sizeof(char *) * 3);     //Alocar linhas
         if(p[i].array == NULL){
             printf("Erro na alocação de memória!\n");
+            //libertaMatriz(p , 3);
             return (-1);
         }
         for(int a = 0 ; a < 3 ; a++){
@@ -37,107 +38,59 @@ struct dados* criaMatriz(){
         }
     }
 
-    /*p->array = malloc(sizeof(char) * 3);            //Linhas
-    for(i = 0 ; i < 3; i++)
-        p[]->array[i] = malloc(sizeof(char *) * 3); //Colunas
-
-    if(p->array == NULL)
-        return (NULL);*/
-    
-    //Inicializar as posiçoes com o X
     for(i=0; i<9; i++){    
-         for(int k = 0 ; k < 2 ; k++){
-            for(int a = 0 ; a < 2 ; a++){
+         for(int k = 0 ; k < 3 ; k++){
+            for(int a = 0 ; a < 3 ; a++){
                 p[i].array[k][a] = 'X';
             }
         }
     }
+    for(int k = 0 ; k < 3 ; k++){
+            for(int a = 0 ; a < 3 ; a++){
+                p[1].array[k][a] = '1';
+            }
+        }
+
+    p[3].array[1][1] = '3';
+    p[4].array[2][1] = '3';
+    p[5].array[1][1] = '3';
     
     return (p);
 }
 
 void mostraMatriz(struct dados *tab, int nLin, int nCol){
-    int i,j;
-    
-    //Parte de cima
-    for(i = 0 ; i < 3 ; i++){
-        printf("*-----------------------");
-        if(i == 2)
-            printf("*");
-    }
 
-    putchar('\n');
+    printf("    *---------*---------*---------*\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    *---------*---------*---------*\n" , 
+    tab[0].array[0][0] , tab[0].array[0][0] , tab[0].array[2][0],     tab[1].array[0][0] , tab[1].array[0][1] , tab[1].array[0][2],   tab[2].array[0][0] , tab[2].array[0][1] , tab[2].array[0][2],   
+    tab[0].array[1][0] , tab[0].array[1][1] , tab[0].array[1][2] ,    tab[1].array[1][0] , tab[1].array[1][1] , tab[1].array[1][2],   tab[2].array[1][0] , tab[2].array[1][1] , tab[2].array[1][2],
+    tab[0].array[2][0] , tab[0].array[2][1] , tab[0].array[2][2] ,    tab[1].array[2][0] , tab[1].array[2][1] , tab[1].array[2][2],   tab[2].array[2][0] , tab[2].array[2][1] , tab[2].array[2][2]
+    );
 
-    for(int l = 0 ; l < 3 ; l++){
-        for(int c = 0 ; c < 3 ; c++){
-            for(int ob = 0 ; ob < 9 ; ob++){
-                
-                printf(" %c ", tab[ob].array[c][l]);
-                if(ob == 3){
-                   // putchar('\n');
-                }
-            putchar('\t');
-        }
-        putchar('\n');
-        }
-    }
+    printf("\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    *---------*---------*---------*\n" , 
+    tab[3].array[0][0] , tab[3].array[0][0] , tab[3].array[2][0],     tab[4].array[0][0] , tab[4].array[0][1] , tab[4].array[0][2],   tab[5].array[0][0] , tab[5].array[0][1] , tab[5].array[0][2],   
+    tab[3].array[1][0] , tab[3].array[1][1] , tab[3].array[1][2] ,    tab[4].array[1][0] , tab[4].array[1][1] , tab[4].array[1][2],   tab[5].array[1][0] , tab[5].array[1][1] , tab[5].array[1][2],
+    tab[3].array[2][0] , tab[3].array[2][1] , tab[3].array[2][2] ,    tab[4].array[2][0] , tab[4].array[2][1] , tab[4].array[2][2],   tab[5].array[2][0] , tab[5].array[2][1] , tab[5].array[2][2]
+    );
 
+    printf("\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    *---------*---------*---------*" , 
+    tab[6].array[0][0] , tab[6].array[0][0] , tab[6].array[2][0],     tab[7].array[0][0] , tab[7].array[0][1] , tab[7].array[0][2],   tab[8].array[0][0] , tab[8].array[0][1] , tab[8].array[0][2],   
+    tab[6].array[1][0] , tab[6].array[1][1] , tab[6].array[1][2] ,    tab[7].array[1][0] , tab[7].array[1][1] , tab[7].array[1][2],   tab[8].array[1][0] , tab[8].array[1][1] , tab[8].array[1][2],
+    tab[6].array[2][0] , tab[6].array[2][1] , tab[6].array[2][2] ,    tab[7].array[2][0] , tab[7].array[2][1] , tab[7].array[2][2],   tab[8].array[2][0] , tab[8].array[2][1] , tab[8].array[2][2]
+    );
 
-
-   /* for(int k = 0 ; k < 9 ; k++){
-
-        /*if(k == 3 || k == 6)
-            putchar('\n');*/
-       /*printf("%d",k);
-        for(int l = 0 ; l < 3 ; l++){
-                //putchar('\t');
-            for(int col = 0 ; col < 3 ; col++){
-                printf(" %c " , tab[k].array[l][col]);
-                if(col == 2)
-                    printf("\n");
-            }
-        }
-        putchar('\t');
-        if(k == 2 || k == 5)
-            putchar('\n');
-
-
-    }*/
-    
-    putchar('\n');
-    /*for(i=0; i<nLin; i++){
-        if(i == 3 || i == 6){
-            printf("\n");
-            for(int a = 0 ; a < 3 ; a++){
-                printf("*-----------------------");
-                if(a == 2)
-                    printf("*");
-            }
-        }
-        putchar('\n');
-        for(j=0; j < nCol; j++){
-            if(j == 0)
-                printf("|   %c\t );
-            else
-                printf("    %c\t");
-            if(j == 2 || j == 5)
-                printf("|");
-        }
-            
-        printf("|\n");
-    }*/
-    for(i = 0 ; i < 3 ; i++){
-        printf("*-----------------------");
-        if(i == 2)
-            printf("*");
-    }
-     
-
-
-
-
-
-
+  
 }
 
 char getPos(char **p, int x, int y){
@@ -148,28 +101,52 @@ void setPos(char **p, int x, int y, char c){
     p[x][y] = c;
 }
 
+int menuInicial(){
+    int opcaoMenu;
+    //Menu Inicial
+    opcaoMenu = printMenuInical();
+    if(opcaoMenu == 1 || opcaoMenu == 2)
+        return opcaoMenu;
 
-int printMenu(){
+    if(opcaoMenu == 3)
+        menuInicial(); //Por enquanto fica assim
+
+    if(opcaoMenu == 4){
+        printf("\nSAIR DO JOGO...\n");
+        exit(0);
+    }
+
+
+}
+
+int printMenuInical(){
     int opcao;
-    int flagSair = 0;
+    char string[2];
 
-    while(flagSair == 0){
+    while(1){
         printf("\n############ Menu ############\n");
         printf("# 1 - Jogar com amigo        #\n");
         printf("# 2 - Jogar com o computador #\n");
-        printf("# 3 - Sair                   #\n");
+        printf("# 3 - Ajudas                 #\n");
+        printf("# 4 - Sair                   #\n");
         printf("##############################\n");
 
         printf("Escolha: ");
-        scanf("%d",&opcao);
-        putchar('\n');
+        fgets(string,sizeof(opcao),stdin);
+        opcao = atoi(string);
         
-        if(opcao > 0 && opcao < 4)
+        putchar('\n');   
+        if(opcao > 0 && opcao < 5)
             return (opcao);
 
        // apagarEcra();
         printf("\nEscolha uma opcao entre (1 e 2)");
     }
 
-    return (opcao);
+}
+
+
+
+int jogarAmigo(){
+
 }

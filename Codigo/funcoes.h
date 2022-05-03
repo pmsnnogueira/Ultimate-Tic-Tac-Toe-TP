@@ -18,7 +18,11 @@ char getPos(char **p, int x, int y);
 void setPos(char **p, int x, int y, char c);
 
 //Minhas Funcoes
-int printMenu();
+int printMenuInical();
+
+int menuInicial();
+
+int jogarAmigo();
 
 
 #endif
