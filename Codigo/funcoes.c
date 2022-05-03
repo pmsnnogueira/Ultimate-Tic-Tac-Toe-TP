@@ -41,11 +41,11 @@ struct dados* criaMatriz(){
     for(i=0; i<9; i++){    
          for(int k = 0 ; k < 3 ; k++){
             for(int a = 0 ; a < 3 ; a++){
-                p[i].array[k][a] = 'X';
+                p[i].array[k][a] = '_';
             }
         }
     }
-    for(int k = 0 ; k < 3 ; k++){
+    /*for(int k = 0 ; k < 3 ; k++){
             for(int a = 0 ; a < 3 ; a++){
                 p[1].array[k][a] = '1';
             }
@@ -53,7 +53,7 @@ struct dados* criaMatriz(){
 
     p[3].array[1][1] = '3';
     p[4].array[2][1] = '3';
-    p[5].array[1][1] = '3';
+    p[5].array[1][1] = '3';*/
     
     return (p);
 }
@@ -193,15 +193,69 @@ int jogarAmigo(struct dados *tab , int *turno){
                    }
                 }   //Se não for o primeiro turno
                 (*turno)++;
-                do{
+               /* do{
                     putchar('\n');
                     mostraMatriz(tab , 9, 9);
                     printf("\nIntroduza as coordenadas de x e y entre (0,0) e (2,2): ");
                     scanf("%d %d" , &x , &y);
-                }while((x > 0 && x < 2) && (y > 0 && y < 2));
-                
-                
+                }while((x > 0 && x < 2) && (y > 0 && y < 2));*/
+
+
+                escolhe_jogada(tab , &jogador , miniTabuleiro);
+
 
             }
         }
+}
+
+void escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
+{
+	int pos;
+    int N = 3;
+
+	printf("\nÉ a vez do jogador %d\n", *jogador);
+	do{
+        //mostraMatriz(tab,9,9);
+		printf("Posição: ");
+		scanf(" %d", &pos);
+	}while(pos<1 || pos>N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
+
+	if(jogador == 1)
+			tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'X';
+		else
+			tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'O';
+
+    if(*jogador == 1)
+        *jogador = 2;
+    else
+        *jogador = 1;
+
+    //return ();
+
+}
+
+int verificarLinha(struct dados *tab , int miniTabuleiro){
+
+    int i , j;
+
+    for(i = 0 ; i < 2 ; i++)
+        if(tab[miniTabuleiro].array[i][0] != '_')
+            for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[i][j] == tab[miniTabuleiro].array[i][j+1]; j++)
+                ;
+            if(j == 2-1)
+                return 1;
+        
+    
+    return 0;
+
+}
+
+int verificarColuna(struct dados *tab , int miniTabuleiro){
+    int i , j;
+
+   
+}
+
+int verificarDiagonal(struct dados *tab , int miniTabuleiro){
+
 }
