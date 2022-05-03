@@ -22,7 +22,7 @@ int printMenuInical();
 
 int menuInicial();
 
-int jogarAmigo();
+int jogarAmigo(struct dados *tab , int *turno);
 
 
 #endif

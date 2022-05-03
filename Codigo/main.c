@@ -8,13 +8,11 @@
 #define MARCAO 'O'
 
 int main(void){
-//Variaveis
-    //char **matriz = NULL;
+
     int opcaoMenu;
     struct dados *matriz;
+    int turno = 0;
     
-//Main
-
     //Inicializar o initRandom()
     initRandom();
 
@@ -33,8 +31,8 @@ int main(void){
         switch(opcaoMenu){
             //Jogar com um amigo
             case 1:
-                jogarAmigo();
-                mostraMatriz(matriz,LINHAS ,COLUNAS);
+                jogarAmigo(matriz,&turno);
+               
                 putchar('\n');
 
 
@@ -53,7 +51,7 @@ int main(void){
 
 
     //Libertar a memoria da matriz
-    libertaMatriz(matriz , LINHAS);
-
+    //libertaMatriz(matriz , LINHAS);
+    
     return (0);
 }

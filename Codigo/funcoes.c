@@ -60,31 +60,32 @@ struct dados* criaMatriz(){
 
 void mostraMatriz(struct dados *tab, int nLin, int nCol){
 
-    printf("    *---------*---------*---------*\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    *---------*---------*---------*\n" , 
+    printf("\
+    \t\t\t*---------*---------*---------*\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t*---------*---------*---------*\n" , 
     tab[0].array[0][0] , tab[0].array[0][0] , tab[0].array[2][0],     tab[1].array[0][0] , tab[1].array[0][1] , tab[1].array[0][2],   tab[2].array[0][0] , tab[2].array[0][1] , tab[2].array[0][2],   
     tab[0].array[1][0] , tab[0].array[1][1] , tab[0].array[1][2] ,    tab[1].array[1][0] , tab[1].array[1][1] , tab[1].array[1][2],   tab[2].array[1][0] , tab[2].array[1][1] , tab[2].array[1][2],
     tab[0].array[2][0] , tab[0].array[2][1] , tab[0].array[2][2] ,    tab[1].array[2][0] , tab[1].array[2][1] , tab[1].array[2][2],   tab[2].array[2][0] , tab[2].array[2][1] , tab[2].array[2][2]
     );
 
     printf("\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    *---------*---------*---------*\n" , 
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t*---------*---------*---------*\n" , 
     tab[3].array[0][0] , tab[3].array[0][0] , tab[3].array[2][0],     tab[4].array[0][0] , tab[4].array[0][1] , tab[4].array[0][2],   tab[5].array[0][0] , tab[5].array[0][1] , tab[5].array[0][2],   
     tab[3].array[1][0] , tab[3].array[1][1] , tab[3].array[1][2] ,    tab[4].array[1][0] , tab[4].array[1][1] , tab[4].array[1][2],   tab[5].array[1][0] , tab[5].array[1][1] , tab[5].array[1][2],
     tab[3].array[2][0] , tab[3].array[2][1] , tab[3].array[2][2] ,    tab[4].array[2][0] , tab[4].array[2][1] , tab[4].array[2][2],   tab[5].array[2][0] , tab[5].array[2][1] , tab[5].array[2][2]
     );
 
     printf("\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    |  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
-    *---------*---------*---------*" , 
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
+    \t\t\t*---------*---------*---------*" , 
     tab[6].array[0][0] , tab[6].array[0][0] , tab[6].array[2][0],     tab[7].array[0][0] , tab[7].array[0][1] , tab[7].array[0][2],   tab[8].array[0][0] , tab[8].array[0][1] , tab[8].array[0][2],   
     tab[6].array[1][0] , tab[6].array[1][1] , tab[6].array[1][2] ,    tab[7].array[1][0] , tab[7].array[1][1] , tab[7].array[1][2],   tab[8].array[1][0] , tab[8].array[1][1] , tab[8].array[1][2],
     tab[6].array[2][0] , tab[6].array[2][1] , tab[6].array[2][2] ,    tab[7].array[2][0] , tab[7].array[2][1] , tab[7].array[2][2],   tab[8].array[2][0] , tab[8].array[2][1] , tab[8].array[2][2]
@@ -147,6 +148,60 @@ int printMenuInical(){
 
 
 
-int jogarAmigo(){
+int jogarAmigo(struct dados *tab , int *turno){
+    int opcao;
+    char string[2];
+    int miniTabuleiro , x , y;
 
+    int jogador = 1;
+
+    while(1){
+            if(*turno != 0)
+                mostraMatriz(tab,9,9);
+            printf("\n###### Jogar com Amigo ######\n");
+            printf("# 1 - Inserir peça          #\n");
+            printf("# 2 - Ver Jogadas           #\n");
+            printf("#############################\n");
+
+            printf("Escolha: ");
+            fgets(string,sizeof(opcao),stdin);
+            opcao = atoi(string);
+            
+            putchar('\n');   
+            if(opcao < 0 && opcao > 2)
+                printf("\nEscolha uma opcao entre (1 e 2)");
+
+            if(opcao == 1){
+                if(*turno == 0){ //Se for o primeiro turno apresentar algumas dicas inciais
+                    while(1){
+                        printf("\
+                        *-----*-----*-----*\n\
+                        |  0  |  1  |  2  |\n\
+                        *-----*-----*-----*\n\
+                        |  3  |  4  |  5  |\n\
+                        *-----*-----*-----*\n\
+                        |  6  |  7  |  8  |\n\
+                        *-----*-----*-----*\n");
+
+                        printf("\nIntroduza o mini tabuleiro a jogar: ");
+                        fgets(string,sizeof(miniTabuleiro),stdin);
+                        miniTabuleiro = atoi(string);               
+                        if(miniTabuleiro >= 0 && miniTabuleiro <= 8)    //Validações de tabuleiro
+                            break;
+
+                        printf("\nIntroduza um mini Tabuleiro válido (entre 0 e 8)\n");
+                   }
+                }   //Se não for o primeiro turno
+                (*turno)++;
+                do{
+                    putchar('\n');
+                    mostraMatriz(tab , 9, 9);
+                    printf("\nIntroduza as coordenadas de x e y entre (0,0) e (2,2): ");
+                    scanf("%d %d" , &x , &y);
+                }while((x > 0 && x < 2) && (y > 0 && y < 2));
+                
+                
+
+            }
+        }
 }
