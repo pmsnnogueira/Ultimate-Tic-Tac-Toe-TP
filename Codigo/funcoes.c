@@ -15,7 +15,7 @@ void libertaMatriz(char** p, int nLin){
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz(){
     struct dados *p = NULL;
-    int i, j;
+    int i, a , k;
 
     p = malloc(sizeof(dados) * 9);
     if(p == NULL)
@@ -27,20 +27,20 @@ struct dados* criaMatriz(){
         if(p[i].array == NULL){
             printf("Erro na alocação de memória!\n");
             //libertaMatriz(p , 3);
-            return (-1);
+            exit (EXIT_FAILURE);
         }
-        for(int a = 0 ; a < 3 ; a++){
+        for(a = 0 ; a < 3 ; a++){
             p[i].array[a] = malloc(sizeof(char *) *3);  //Alocar Colunas
             if(p[i].array[a] == NULL){
                 printf("Erro na alocação de memoria!\n");
-                return (-1);
+                exit (EXIT_FAILURE);
             }
         }
     }
 
     for(i=0; i<9; i++){    
          for(int k = 0 ; k < 3 ; k++){
-            for(int a = 0 ; a < 3 ; a++){
+            for(a = 0 ; a < 3 ; a++){
                 p[i].array[k][a] = '_';
             }
         }
@@ -117,10 +117,11 @@ int menuInicial(){
         exit(0);
     }
 
-
+    return (0);
 }
 
 int printMenuInical(){
+    
     int opcao;
     char string[255];
   
@@ -133,14 +134,12 @@ int printMenuInical(){
         printf("# 3 - Ajudas                 #\n");
         printf("# 4 - Sair                   #\n");
         printf("##############################\n");
-
         printf("Escolha: ");
-        
     
         fgets(string,sizeof(string)-1,stdin);
         string[strlen(string)-1] = '\0';
         opcao = atoi(string);
-        
+    
         putchar('\n');   
         if(opcao > 0 && opcao < 5)
             return (opcao);
@@ -160,8 +159,7 @@ int jogarAmigo(struct dados *tab , int *turno){
 
     int jogador = 1;
 
-    int flag = 0;
-
+   
     while(1){
             if(*turno != 0)
                 mostraMatriz(tab,9,9);
@@ -174,7 +172,6 @@ int jogarAmigo(struct dados *tab , int *turno){
 
             fgets(string,sizeof(string)-1,stdin);
             string[strlen(string)-1] = '\0';
-     
  
             opcao = atoi(string);
             
@@ -218,6 +215,16 @@ int jogarAmigo(struct dados *tab , int *turno){
 
                 miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro);
 
+            //TENHO DE FAZER AS VITORIAS
+               /* if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro)  || verificarDiagonal(tab , miniTabuleiro) ){
+                    ganhou = *jogador;   
+                    tabVitorias[miniTabuleiro] = *jogador;
+                    if(verificaJogo(tabVitorias , *jogador) == *jogador){
+                        escreveResultado(*jogador);
+                        return (1);
+                    }
+                }  */    
+
 
             }
         }
@@ -225,26 +232,33 @@ int jogarAmigo(struct dados *tab , int *turno){
 
 int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
 {
+
 	int pos;
     int N = 3;
+    int ganhou = 0;
     
     char string[2];
+
+    int tabVitorias[9];
 
 	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador,miniTabuleiro);
 	do{
         //mostraMatriz(tab,9,9);
-        *string = "";
-		printf("Posição para colocar peca: ");
+        printf("Posição para colocar peca: ");
 
 		fgets(string,sizeof(pos),stdin);
         pos = atoi(string);
 
-	}while(pos<1 || pos>N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
+	}while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
 
 	if(*jogador == 1)
-			tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'X';
-		else
-			tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'O';
+		tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'X';
+	else
+        tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'O';
+
+
+
+    //verificarVitoria();
 
     if(*jogador == 1)
         *jogador = 2;
@@ -252,31 +266,53 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
         *jogador = 1;
 
     return (pos);
-
 }
 
 int verificarLinha(struct dados *tab , int miniTabuleiro){
 
     int i , j;
 
-    for(i = 0 ; i < 2 ; i++)
+    for(i = 0 ; i < 2 ; i++)        //Acho que tenho mal este 2
         if(tab[miniTabuleiro].array[i][0] != '_')
             for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[i][j] == tab[miniTabuleiro].array[i][j+1]; j++)
                 ;
             if(j == 2-1)
-                return 1;
+                return (1);
         
-    
-    return 0;
-
+    return (0);
 }
 
 int verificarColuna(struct dados *tab , int miniTabuleiro){
     int i , j;
 
-   
+    for(i = 0 ; i < 2 ; i++)        //Acho que tenho mal este 2
+        if(tab[miniTabuleiro].array[0][i] != '_')
+            for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[j][i] == tab[miniTabuleiro].array[j+1][i]; j++)
+                ;
+            if(j == 2-1)
+                return (1);
+
+   return (0);
 }
 
 int verificarDiagonal(struct dados *tab , int miniTabuleiro){
 
+    return (0);
+}
+
+int verificarVitoria(int *tab , int jogador){
+
+    int soma = 0;
+    for(int i = 0 ; i < 9 ; i++){
+        if(tab[i] == jogador)
+            soma++;
+    }
+    if(soma == 3)
+        return (jogador);
+    
+    return (0);
+}
+
+void escreveResultado(int jogador){
+    printf("\nGanhou o Jogador %d\n",jogador);
 }
