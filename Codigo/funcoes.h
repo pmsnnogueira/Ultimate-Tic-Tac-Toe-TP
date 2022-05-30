@@ -8,6 +8,8 @@ void libertaMatriz(char** p, int nLin);
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz();
 
+int *criarTabVitorias(int dimensao);
+
 // Imprime o conteúdo de uma matriz dinâmica de caracteres
 void mostraMatriz(struct dados *tab, int nLin, int nCol);
 
@@ -22,7 +24,7 @@ int printMenuInical();
 
 int menuInicial();
 
-int jogarAmigo(struct dados *tab , int *turno);
+int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias);
 
 
 #endif

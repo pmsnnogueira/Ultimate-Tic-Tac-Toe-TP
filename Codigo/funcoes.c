@@ -58,6 +58,23 @@ struct dados* criaMatriz(){
     return (p);
 }
 
+int *criarTabVitorias(int dimensao){
+    int *tab = NULL;
+
+    tab = malloc(sizeof(int) * dimensao);
+    if(tab == NULL){
+        printf("Erro na alocacao de memoria no tabuleiro Vitorias\n");
+        exit (EXIT_FAILURE);
+    }
+
+    return (tab);
+}
+
+void libertarTabVitorias(int *tabVitorias , int dimensao){
+    for(int i = 0 ; i < dimensao ; i++)
+        free(tabVitorias);
+}
+
 void mostraMatriz(struct dados *tab, int nLin, int nCol){
 
     printf("\
@@ -152,12 +169,13 @@ int printMenuInical(){
 
 
 
-int jogarAmigo(struct dados *tab , int *turno){
+int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
     int opcao;
     char string[255];
     int miniTabuleiro , x , y;
 
     int jogador = 1;
+    int ganhou;
 
    
     while(1){
@@ -166,6 +184,7 @@ int jogarAmigo(struct dados *tab , int *turno){
             printf("\n###### Jogar com Amigo ######\n");
             printf("# 1 - Inserir peça          #\n");
             printf("# 2 - Ver Jogadas           #\n");
+            printf("# 3 - Pause                 #\n");
             printf("#############################\n");
 
             printf("Escolha: ");
@@ -176,8 +195,8 @@ int jogarAmigo(struct dados *tab , int *turno){
             opcao = atoi(string);
             
             putchar('\n');   
-            if(opcao < 0 && opcao > 2)
-                printf("\nEscolha uma opcao entre (1 e 2)");
+            if(opcao < 0 && opcao > 3)
+                printf("\nEscolha uma opcao entre (1 e 3)");
 
             if(opcao == 1){
                 if(*turno == 0){ //Se for o primeiro turno apresentar algumas dicas inciais
@@ -213,24 +232,33 @@ int jogarAmigo(struct dados *tab , int *turno){
                 }while((x > 0 && x < 2) && (y > 0 && y < 2));*/
 
 
-                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro);
+                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias);
 
             //TENHO DE FAZER AS VITORIAS
-               /* if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro)  || verificarDiagonal(tab , miniTabuleiro) ){
-                    ganhou = *jogador;   
-                    tabVitorias[miniTabuleiro] = *jogador;
-                    if(verificaJogo(tabVitorias , *jogador) == *jogador){
-                        escreveResultado(*jogador);
+                /*if(verificarLinha(tab , miniTabuleiro) ){
+                    ganhou = jogador;   
+                    //tabVitorias[miniTabuleiro] = jogador;
+                    /*if(verificaJogo(tab , jogador) == jogador){
+                        escreveResultado(jogador);
                         return (1);
-                    }
-                }  */    
+                    }*/
+                  /*  mostraMatriz(tab,9,9);
+                    escreveResultado(jogador);
+
+                    exit(9);
+                }  */
+
+                if(jogador == 1)
+                    jogador = 2;
+                else
+                    jogador = 1;
 
 
             }
         }
 }
 
-int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
+int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias)
 {
 
 	int pos;
@@ -238,8 +266,10 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
     int ganhou = 0;
     
     char string[2];
+    char jogador1 = 'X';
+    char jogador2 = 'O';
+    char jogadorAtual;
 
-    int tabVitorias[9];
 
 	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador,miniTabuleiro);
 	do{
@@ -248,48 +278,83 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro)
 
 		fgets(string,sizeof(pos),stdin);
         pos = atoi(string);
+        putchar('\n');
 
-	}while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
+	}while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');        //Enquanto o tabVitorias[(pos-1)] != '_'
 
-	if(*jogador == 1)
-		tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'X';
-	else
-        tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = 'O';
+	if(*jogador == 1){
+		tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador1;
+        jogadorAtual = jogador1;
+    }
+	else{
+        tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador2;
+        jogadorAtual = jogador2;
+    }   
 
+    if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro) ){
+        //ganhou = jogador;   
+        tabVitorias[miniTabuleiro] = jogador;
+        ganharMiniJogo(tab , miniTabuleiro , jogadorAtual);
+        if(verificarVitoria(tabVitorias , *jogador) ){
 
-
-    //verificarVitoria();
-
-    if(*jogador == 1)
-        *jogador = 2;
-    else
-        *jogador = 1;
-
+        }
+        else
+            escreveResultadoMini(*jogador , miniTabuleiro);
+        //mostraMatriz(tab,9,9);
+       //exit(1); 
+    }  
     return (pos);
+}
+
+void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter){
+
+
+    for(int l = 0 ; l < 3 ; l++)
+        for(int c = 0 ; c < 3 ; c++)
+            tab[miniTabuleiro].array[l][c] = ' ';
+
+    tab[miniTabuleiro].array[1][1] = caracter;
+
+
+    return;
 }
 
 int verificarLinha(struct dados *tab , int miniTabuleiro){
 
-    int i , j;
+    int i , j , soma = 0;
+    printf("%d\n\n\n\n\n",miniTabuleiro);
+	for(i=0; i<3; i++)
+		if(tab[miniTabuleiro].array[i][0] != '_'){
+			for(j=0; j<3-1 && tab[miniTabuleiro].array[i][j] == tab[miniTabuleiro].array[i][j+1]; j++)
+				;
+			if(j==3-1)
+				return 1;
+		}
+	return 0; 
 
-    for(i = 0 ; i < 2 ; i++)        //Acho que tenho mal este 2
-        if(tab[miniTabuleiro].array[i][0] != '_')
-            for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[i][j] == tab[miniTabuleiro].array[i][j+1]; j++)
-                ;
-            if(j == 2-1)
-                return (1);
-        
-    return (0);
+        //for(i = 0 ; i < 2 ; i++){   //Linhas
+            //for(j = 0 ; j < 2 ; j++){   //Colunas
+                /*if(tab[miniTabuleiro].array[1][0] != '_'){    
+                    if(tab[miniTabuleiro].array[1][0] == tab[miniTabuleiro].array[1][1] && tab[miniTabuleiro].array[1][0] == tab[miniTabuleiro].array[1][2]){
+                        
+                        return(1);
+                    }
+                    /*else
+                        soma = 0;*/
+                //}
+            //}
+        //} 
+ //   return (0);
 }
 
 int verificarColuna(struct dados *tab , int miniTabuleiro){
     int i , j;
 
-    for(i = 0 ; i < 2 ; i++)        //Acho que tenho mal este 2
+    for(i = 0 ; i < 3 ; i++)        
         if(tab[miniTabuleiro].array[0][i] != '_')
-            for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[j][i] == tab[miniTabuleiro].array[j+1][i]; j++)
+            for(j = 0 ; j < 3-1 && tab[miniTabuleiro].array[j][i] == tab[miniTabuleiro].array[j+1][i]; j++)
                 ;
-            if(j == 2-1)
+            if(j == 3-1)
                 return (1);
 
    return (0);
@@ -297,7 +362,16 @@ int verificarColuna(struct dados *tab , int miniTabuleiro){
 
 int verificarDiagonal(struct dados *tab , int miniTabuleiro){
 
-    return (0);
+     int i , j;
+
+    for(i = 0 ; i < 2 ; i++)        
+        if(tab[miniTabuleiro].array[0][i] != '_')
+            for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[j][i] == tab[miniTabuleiro].array[j+1][i+1]; j++)
+                ;
+            if(j == 2-1)
+                return (1);
+
+   return (0);
 }
 
 int verificarVitoria(int *tab , int jogador){
@@ -305,12 +379,16 @@ int verificarVitoria(int *tab , int jogador){
     int soma = 0;
     for(int i = 0 ; i < 9 ; i++){
         if(tab[i] == jogador)
-            soma++;
+            soma += 1;
     }
     if(soma == 3)
         return (jogador);
     
     return (0);
+}
+
+void escreveResultadoMini(int jogador , int miniTabuleiro){
+    printf("\nO jogador %d ganho o minitabuleiro %d\n",jogador , miniTabuleiro);
 }
 
 void escreveResultado(int jogador){

@@ -1,8 +1,9 @@
 #include "utils.h"
 #include "funcoes.h"
 //Variaveis Globais
-#define LINHAS 9
-#define COLUNAS 9
+#define LINHAS 3
+#define COLUNAS 3
+#define DIMENSAOTABULEIRO 9
 
 #define MarcaX 'X'
 #define MARCAO 'O'
@@ -12,6 +13,7 @@ int main(void){
     int opcaoMenu;
     struct dados *matriz;
     int turno = 0;
+    int *tabVitorias = NULL;
     
     //Inicializar o initRandom()
     initRandom();
@@ -23,35 +25,34 @@ int main(void){
         return (1);
     }
 
+    tabVitorias = criarTabVitorias(DIMENSAOTABULEIRO);
+
     //MenuInicial
     opcaoMenu = menuInicial();
 
 
-    while(1){
+    do{
         switch(opcaoMenu){
             //Jogar com um amigo
             case 1:
-                jogarAmigo(matriz,&turno);
+                jogarAmigo(matriz,&turno , tabVitorias);
                
                 putchar('\n');
-
-
 
             break;
 
             //Jogar com o computador
             case 2:
-
+            
             break;
         }
-    }
-
-
-
-
+    }while(turno < 9 * 9);
 
     //Libertar a memoria da matriz
     //libertaMatriz(matriz , LINHAS);
+    //libertarTabVitorias(tabVitorias);
     
+    free(tabVitorias);// nao sei se está bem
+
     return (0);
 }
