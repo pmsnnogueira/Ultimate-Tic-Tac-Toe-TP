@@ -15,7 +15,7 @@ void libertaMatriz(char** p, int nLin){
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz(){
     struct dados *p = NULL;
-    int i, a , k;
+    int i, a;
 
     p = malloc(sizeof(dados) * 9);
     if(p == NULL)
@@ -59,13 +59,18 @@ struct dados* criaMatriz(){
 }
 
 int *criarTabVitorias(int dimensao){
+    
     int *tab = NULL;
-
+    int i;
+    
     tab = malloc(sizeof(int) * dimensao);
     if(tab == NULL){
         printf("Erro na alocacao de memoria no tabuleiro Vitorias\n");
         exit (EXIT_FAILURE);
     }
+
+    for(i = 0; i < dimensao ; i++)
+        tab[i] = 0;
 
     return (tab);
 }
@@ -75,7 +80,7 @@ void libertarTabVitorias(int *tabVitorias , int dimensao){
         free(tabVitorias);
 }
 
-void mostraMatriz(struct dados *tab, int nLin, int nCol){
+void mostraMatriz(struct dados *tab){
 
     printf("\
     \t\t\t*---------*---------*---------*\n\
@@ -83,7 +88,7 @@ void mostraMatriz(struct dados *tab, int nLin, int nCol){
     \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
     \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
     \t\t\t*---------*---------*---------*\n" , 
-    tab[0].array[0][0] , tab[0].array[0][0] , tab[0].array[2][0],     tab[1].array[0][0] , tab[1].array[0][1] , tab[1].array[0][2],   tab[2].array[0][0] , tab[2].array[0][1] , tab[2].array[0][2],   
+    tab[0].array[0][0] , tab[0].array[0][1] , tab[0].array[0][2],     tab[1].array[0][0] , tab[1].array[0][1] , tab[1].array[0][2],   tab[2].array[0][0] , tab[2].array[0][1] , tab[2].array[0][2],   
     tab[0].array[1][0] , tab[0].array[1][1] , tab[0].array[1][2] ,    tab[1].array[1][0] , tab[1].array[1][1] , tab[1].array[1][2],   tab[2].array[1][0] , tab[2].array[1][1] , tab[2].array[1][2],
     tab[0].array[2][0] , tab[0].array[2][1] , tab[0].array[2][2] ,    tab[1].array[2][0] , tab[1].array[2][1] , tab[1].array[2][2],   tab[2].array[2][0] , tab[2].array[2][1] , tab[2].array[2][2]
     );
@@ -93,7 +98,7 @@ void mostraMatriz(struct dados *tab, int nLin, int nCol){
     \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
     \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
     \t\t\t*---------*---------*---------*\n" , 
-    tab[3].array[0][0] , tab[3].array[0][0] , tab[3].array[2][0],     tab[4].array[0][0] , tab[4].array[0][1] , tab[4].array[0][2],   tab[5].array[0][0] , tab[5].array[0][1] , tab[5].array[0][2],   
+    tab[3].array[0][0] , tab[3].array[0][1] , tab[3].array[0][2],     tab[4].array[0][0] , tab[4].array[0][1] , tab[4].array[0][2],   tab[5].array[0][0] , tab[5].array[0][1] , tab[5].array[0][2],   
     tab[3].array[1][0] , tab[3].array[1][1] , tab[3].array[1][2] ,    tab[4].array[1][0] , tab[4].array[1][1] , tab[4].array[1][2],   tab[5].array[1][0] , tab[5].array[1][1] , tab[5].array[1][2],
     tab[3].array[2][0] , tab[3].array[2][1] , tab[3].array[2][2] ,    tab[4].array[2][0] , tab[4].array[2][1] , tab[4].array[2][2],   tab[5].array[2][0] , tab[5].array[2][1] , tab[5].array[2][2]
     );
@@ -103,7 +108,7 @@ void mostraMatriz(struct dados *tab, int nLin, int nCol){
     \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
     \t\t\t|  %c %c %c  |  %c %c %c  |  %c %c %c  |\n\
     \t\t\t*---------*---------*---------*" , 
-    tab[6].array[0][0] , tab[6].array[0][0] , tab[6].array[2][0],     tab[7].array[0][0] , tab[7].array[0][1] , tab[7].array[0][2],   tab[8].array[0][0] , tab[8].array[0][1] , tab[8].array[0][2],   
+    tab[6].array[0][0] , tab[6].array[0][1] , tab[6].array[0][2],     tab[7].array[0][0] , tab[7].array[0][1] , tab[7].array[0][2],   tab[8].array[0][0] , tab[8].array[0][1] , tab[8].array[0][2],   
     tab[6].array[1][0] , tab[6].array[1][1] , tab[6].array[1][2] ,    tab[7].array[1][0] , tab[7].array[1][1] , tab[7].array[1][2],   tab[8].array[1][0] , tab[8].array[1][1] , tab[8].array[1][2],
     tab[6].array[2][0] , tab[6].array[2][1] , tab[6].array[2][2] ,    tab[7].array[2][0] , tab[7].array[2][1] , tab[7].array[2][2],   tab[8].array[2][0] , tab[8].array[2][1] , tab[8].array[2][2]
     );
@@ -167,47 +172,46 @@ int printMenuInical(){
 
 }
 
-
-
 int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
     int opcao;
     char string[255];
-    int miniTabuleiro , x , y;
+    int miniTabuleiro;
 
     int jogador = 1;
-    int ganhou;
+    //int ganhou;
 
    
     while(1){
-            if(*turno != 0)
-                mostraMatriz(tab,9,9);
+            if(*turno != 1){
+                mostraMatriz(tab);
+            }
+
+            printf("\n[TURNO %d]",*turno);
             printf("\n###### Jogar com Amigo ######\n");
             printf("# 1 - Inserir peça          #\n");
             printf("# 2 - Ver Jogadas           #\n");
             printf("# 3 - Pause                 #\n");
             printf("#############################\n");
-
             printf("Escolha: ");
 
             fgets(string,sizeof(string)-1,stdin);
             string[strlen(string)-1] = '\0';
- 
             opcao = atoi(string);
-            
             putchar('\n');   
+
             if(opcao < 0 && opcao > 3)
                 printf("\nEscolha uma opcao entre (1 e 3)");
 
             if(opcao == 1){
-                if(*turno == 0){ //Se for o primeiro turno apresentar algumas dicas inciais
+                if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
                     while(1){
                         printf("\
                         *-----*-----*-----*\n\
-                        |  0  |  1  |  2  |\n\
+                        |  1  |  2  |  3  |\n\
                         *-----*-----*-----*\n\
-                        |  3  |  4  |  5  |\n\
+                        |  4  |  5  |  6  |\n\
                         *-----*-----*-----*\n\
-                        |  6  |  7  |  8  |\n\
+                        |  7  |  8  |  9  |\n\
                         *-----*-----*-----*\n");
 
                         printf("\nIntroduza o mini tabuleiro a jogar: ");
@@ -215,86 +219,64 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
                         fgets(string,sizeof(string)-1,stdin);
                         string[strlen(string)-1] = '\0';
                         miniTabuleiro = atoi(string);      
-                        
-                        if(miniTabuleiro >= 0 && miniTabuleiro <= 8)    //Validações de tabuleiro
+                        miniTabuleiro = miniTabuleiro -1;
+                        if(miniTabuleiro >= 0 && miniTabuleiro < 9)    //Validações de tabuleiro
                             break;
 
-                        printf("\nIntroduza um mini Tabuleiro válido (entre 0 e 8)\n");
-  
+                        printf("\nIntroduza um mini Tabuleiro válido (entre 1 e 9)\n");
+                        
                    }
                 }   //Se não for o primeiro turno
-                (*turno)++;
-               /* do{
-                    putchar('\n');
-                    mostraMatriz(tab , 9, 9);
-                    printf("\nIntroduza as coordenadas de x e y entre (0,0) e (2,2): ");
-                    scanf("%d %d" , &x , &y);
-                }while((x > 0 && x < 2) && (y > 0 && y < 2));*/
 
-
-                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias);
-
-            //TENHO DE FAZER AS VITORIAS
-                /*if(verificarLinha(tab , miniTabuleiro) ){
-                    ganhou = jogador;   
-                    //tabVitorias[miniTabuleiro] = jogador;
-                    /*if(verificaJogo(tab , jogador) == jogador){
-                        escreveResultado(jogador);
-                        return (1);
-                    }*/
-                  /*  mostraMatriz(tab,9,9);
-                    escreveResultado(jogador);
-
-                    exit(9);
-                }  */
+                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno);
+                if(tabVitorias[miniTabuleiro] != 0)
+                    miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
 
                 if(jogador == 1)
                     jogador = 2;
                 else
                     jogador = 1;
 
-
+                (*turno)++;
             }
         }
 }
 
-int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias)
-{
+int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno){
 
 	int pos;
     int N = 3;
-    int ganhou = 0;
     
-    char string[2];
+    char string[50];
     char jogador1 = 'X';
     char jogador2 = 'O';
     char jogadorAtual;
 
-
-	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador,miniTabuleiro);
+	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador , miniTabuleiro + 1);
 	do{
-        //mostraMatriz(tab,9,9);
-        printf("Posição para colocar peca: ");
+        strcpy(string , " ");  // Meti para limpar a string de varios inputs errados 
+        printf("Posição para colocar peca entre (1 e 9): ");
 
 		fgets(string,sizeof(pos),stdin);
         pos = atoi(string);
         putchar('\n');
 
-	}while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');        //Enquanto o tabVitorias[(pos-1)] != '_'
+	}while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
 
 	if(*jogador == 1){
 		tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador1;
         jogadorAtual = jogador1;
     }
-	else{
+	else{       //Se for o jogador 2
         tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador2;
         jogadorAtual = jogador2;
     }   
 
     if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro) ){
         //ganhou = jogador;   
-        tabVitorias[miniTabuleiro] = jogador;
+        tabVitorias[miniTabuleiro] = *jogador;
         ganharMiniJogo(tab , miniTabuleiro , jogadorAtual);
+        
         if(verificarVitoria(tabVitorias , *jogador) ){
 
         }
@@ -303,7 +285,18 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         //mostraMatriz(tab,9,9);
        //exit(1); 
     }  
-    return (pos);
+    return (pos-1);
+}
+
+int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias){
+    
+    int aleatorio; 
+    do{
+        aleatorio = intUniformRnd(1, dimensaotabVitorias-1);
+    }while(tabVitorias[aleatorio] != 0);
+
+    return (aleatorio);
+
 }
 
 void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter){
@@ -321,55 +314,42 @@ void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter){
 
 int verificarLinha(struct dados *tab , int miniTabuleiro){
 
-    int i , j , soma = 0;
-    printf("%d\n\n\n\n\n",miniTabuleiro);
+    int i , j;
 	for(i=0; i<3; i++)
 		if(tab[miniTabuleiro].array[i][0] != '_'){
-			for(j=0; j<3-1 && tab[miniTabuleiro].array[i][j] == tab[miniTabuleiro].array[i][j+1]; j++)
+			for(j=0; j < 3-1 && tab[miniTabuleiro].array[i][j] == tab[miniTabuleiro].array[i][j+1]; j++)
 				;
-			if(j==3-1)
+			if(j == 3-1)
 				return 1;
 		}
 	return 0; 
-
-        //for(i = 0 ; i < 2 ; i++){   //Linhas
-            //for(j = 0 ; j < 2 ; j++){   //Colunas
-                /*if(tab[miniTabuleiro].array[1][0] != '_'){    
-                    if(tab[miniTabuleiro].array[1][0] == tab[miniTabuleiro].array[1][1] && tab[miniTabuleiro].array[1][0] == tab[miniTabuleiro].array[1][2]){
-                        
-                        return(1);
-                    }
-                    /*else
-                        soma = 0;*/
-                //}
-            //}
-        //} 
- //   return (0);
 }
 
 int verificarColuna(struct dados *tab , int miniTabuleiro){
     int i , j;
 
     for(i = 0 ; i < 3 ; i++)        
-        if(tab[miniTabuleiro].array[0][i] != '_')
+        if(tab[miniTabuleiro].array[0][i] != '_'){
             for(j = 0 ; j < 3-1 && tab[miniTabuleiro].array[j][i] == tab[miniTabuleiro].array[j+1][i]; j++)
                 ;
             if(j == 3-1)
                 return (1);
+        }
 
    return (0);
 }
 
 int verificarDiagonal(struct dados *tab , int miniTabuleiro){
 
-     int i , j;
-
-    for(i = 0 ; i < 2 ; i++)        
-        if(tab[miniTabuleiro].array[0][i] != '_')
-            for(j = 0 ; j < 2-1 && tab[miniTabuleiro].array[j][i] == tab[miniTabuleiro].array[j+1][i+1]; j++)
-                ;
-            if(j == 2-1)
-                return (1);
+    if(tab[miniTabuleiro].array[0][0] != '_' &&                                 //_
+    tab[miniTabuleiro].array[0][0] == tab[miniTabuleiro].array[1][1] &&         //  _
+    tab[miniTabuleiro].array[0][0] == tab[miniTabuleiro].array[2][2])           //     _
+        return (1); 
+    
+    if(tab[miniTabuleiro].array[0][2] != '_' &&                                 //      _
+    tab[miniTabuleiro].array[0][2] == tab[miniTabuleiro].array[1][1] &&         //   _
+    tab[miniTabuleiro].array[0][2] == tab[miniTabuleiro].array[2][0])           // _
+        return (1);
 
    return (0);
 }
@@ -388,7 +368,7 @@ int verificarVitoria(int *tab , int jogador){
 }
 
 void escreveResultadoMini(int jogador , int miniTabuleiro){
-    printf("\nO jogador %d ganho o minitabuleiro %d\n",jogador , miniTabuleiro);
+    printf("\nO jogador %d ganho o minitabuleiro %d\n",jogador , miniTabuleiro+1);
 }
 
 void escreveResultado(int jogador){

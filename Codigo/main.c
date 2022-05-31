@@ -1,5 +1,7 @@
 #include "utils.h"
 #include "funcoes.h"
+#include "jogo.h"
+
 //Variaveis Globais
 #define LINHAS 3
 #define COLUNAS 3
@@ -12,11 +14,12 @@ int main(void){
 
     int opcaoMenu;
     struct dados *matriz;
-    int turno = 0;
+    int turno = 1;
     int *tabVitorias = NULL;
     
     //Inicializar o initRandom()
     initRandom();
+    //srand ( (unsigned) time (NULL));
 
     //Criar a matriz dinamica
     matriz = criaMatriz();
@@ -26,11 +29,8 @@ int main(void){
     }
 
     tabVitorias = criarTabVitorias(DIMENSAOTABULEIRO);
-
     //MenuInicial
     opcaoMenu = menuInicial();
-
-
     do{
         switch(opcaoMenu){
             //Jogar com um amigo
@@ -43,7 +43,8 @@ int main(void){
 
             //Jogar com o computador
             case 2:
-            
+                //jogarComputador(matriz , &turno , tabVitorias);
+                putchar('\n');
             break;
         }
     }while(turno < 9 * 9);

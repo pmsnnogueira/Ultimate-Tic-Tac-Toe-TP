@@ -11,7 +11,7 @@ struct dados* criaMatriz();
 int *criarTabVitorias(int dimensao);
 
 // Imprime o conteúdo de uma matriz dinâmica de caracteres
-void mostraMatriz(struct dados *tab, int nLin, int nCol);
+void mostraMatriz(struct dados *tab);
 
 // Obtém o caracter armazenado na posição (x, y) de uma matriz de caracteres
 char getPos(char **p, int x, int y);
@@ -25,6 +25,22 @@ int printMenuInical();
 int menuInicial();
 
 int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias);
+
+int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno);
+
+int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias);
+
+int verificarLinha(struct dados *tab , int miniTabuleiro);
+
+int verificarColuna(struct dados *tab , int miniTabuleiro);
+
+int verificarDiagonal(struct dados *tab , int miniTabuleiro);
+
+int verificarVitoria(int *tab , int jogador);
+
+void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter);
+
+void escreveResultadoMini(int jogador , int miniTabuleiro);
 
 
 #endif
