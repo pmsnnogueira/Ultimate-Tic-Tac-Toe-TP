@@ -42,5 +42,7 @@ void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter);
 
 void escreveResultadoMini(int jogador , int miniTabuleiro);
 
+void escreveResultado(int jogador);
+
 
 #endif

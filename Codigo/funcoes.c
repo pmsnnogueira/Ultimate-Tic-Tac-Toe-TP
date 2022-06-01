@@ -278,7 +278,7 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         ganharMiniJogo(tab , miniTabuleiro , jogadorAtual);
         
         if(verificarVitoria(tabVitorias , *jogador) ){
-
+            escreveResultado(*jogador);
         }
         else
             escreveResultadoMini(*jogador , miniTabuleiro);

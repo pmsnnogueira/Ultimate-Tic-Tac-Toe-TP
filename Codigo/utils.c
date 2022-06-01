@@ -2,6 +2,7 @@
 // DEIS-ISEC 2021-2022
 #include "utils.h"
 #include "funcoes.h"
+#include "jogo.h"
 
 void initRandom(){
     srand(time(NULL));
