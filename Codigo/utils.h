@@ -11,6 +11,18 @@ typedef struct dados{
     
 }dados;
 
+//Listas Ligas
+typedef struct jogadas{
+
+    int turno;
+    int posicao;
+    int minitabuleiro;
+    int jogador;
+    struct jogadas *prox;       //Ponteiro para o proximo nó
+
+}jogadas;
+
+
 
 // Inicializa o gerador de numeros aleatorios.
 // Esta funcao deve ser chamada apenas uma vez no inicio da execucao do programa

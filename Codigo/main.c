@@ -16,10 +16,12 @@ int main(void){
     struct dados *matriz;
     int turno = 1;
     int *tabVitorias = NULL;
+
+    //Lista Ligada
+    jogadas *lista = NULL;
     
     //Inicializar o initRandom()
     initRandom();
-    //srand ( (unsigned) time (NULL));
 
     //Criar a matriz dinamica
     matriz = criaMatriz();
@@ -35,7 +37,7 @@ int main(void){
         switch(opcaoMenu){
             //Jogar com um amigo
             case 1:
-                jogarAmigo(matriz,&turno , tabVitorias);
+                jogarAmigo(matriz,&turno , tabVitorias , lista);
                
                 putchar('\n');
 

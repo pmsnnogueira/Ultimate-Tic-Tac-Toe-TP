@@ -1,5 +1,5 @@
-#include "funcoes.h"
 #include "utils.h"
+#include "funcoes.h"
 
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
 void libertaMatriz(char** p, int nLin){
@@ -172,7 +172,7 @@ int printMenuInical(){
 
 }
 
-int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
+int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista){
     int opcao;
     char string[255];
     int miniTabuleiro;
@@ -201,7 +201,6 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
 
             if(opcao < 0 && opcao > 3)
                 printf("\nEscolha uma opcao entre (1 e 3)");
-
             if(opcao == 1){
                 if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
                     while(1){
@@ -228,7 +227,9 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
                    }
                 }   //Se não for o primeiro turno
 
-                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno);
+                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno , &lista);
+                printf("Aqui!\n");
+                //imprimirLista(lista);
                 if(tabVitorias[miniTabuleiro] != 0)
                     miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
 
@@ -239,10 +240,14 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias){
 
                 (*turno)++;
             }
+            if(opcao == 2){
+                printf("\nImprimir Lista\n");
+                imprimirLista(lista);
+            }
         }
 }
 
-int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno){
+int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno ,struct jogadas *lista){
 
 	int pos;
     int N = 3;
@@ -271,6 +276,9 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador2;
         jogadorAtual = jogador2;
     }   
+
+    lista = insereJogadaFim(lista , miniTabuleiro , *jogador , pos , turno);
+    imprimirLista(lista);
 
     if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro) ){
         //ganhou = jogador;   
@@ -373,4 +381,64 @@ void escreveResultadoMini(int jogador , int miniTabuleiro){
 
 void escreveResultado(int jogador){
     printf("\nGanhou o Jogador %d\n",jogador);
+}
+
+
+//Listas Ligadas
+jogadas* insereJogadaFim(struct jogadas *lista , int miniTabuleiro , int jogador , int posicao , int turno){
+
+    jogadas *novo , *aux;
+
+    novo = (jogadas*)malloc(sizeof(jogadas));
+    if(novo == NULL){
+        printf("Erro na alocação de memoria\n");
+        return (lista);
+    }
+
+    preencheLista(novo , miniTabuleiro , jogador , posicao , turno);
+    if(lista == NULL)
+        lista = novo;
+    else{
+        aux = lista;
+        while(aux->prox != NULL)
+            aux = aux->prox;
+        aux->prox = novo;
+
+    
+    }
+        putchar('\n');
+        imprimirLista(lista);
+    return (lista);
+
+
+
+       /* preencheLista(novo , miniTabuleiro , jogador , posicao , turno);
+        novo->prox = lista;
+        lista = novo;
+
+        //imprimirLista(lista);
+    return (lista);*/
+}
+
+void preencheLista(jogadas *lista  , int miniTabuleiro , int jogador , int posicao , int turno){
+
+    lista->jogador = jogador;
+    lista->minitabuleiro = miniTabuleiro;
+    lista->posicao = posicao;
+    lista->turno = turno;
+    lista->prox = NULL;
+
+}
+
+void imprimirLista(jogadas *lista){
+
+    while(lista != NULL){
+        printf("\n#####JOGADAS####\n");
+        printf("# Turno: %d         #\n",lista->turno);
+        printf("# Minitabuleiro: %d #\n",lista->minitabuleiro);
+        printf("# Jogador: %d       #\n",lista->jogador);
+        printf("# Posicao: %d       #\n",lista->posicao);
+        printf("#####################\n");
+        lista = lista->prox;
+    }
 }

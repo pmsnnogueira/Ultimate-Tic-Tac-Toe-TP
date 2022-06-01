@@ -59,8 +59,8 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias){
                    }
                 }   //Se não for o primeiro turno
 
-                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno);
-
+               // miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno , lista);
+            //Apaguei mas é para meter a lista
                 if(jogador == 1)
                     jogador = 2;
                 else
