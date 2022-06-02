@@ -110,14 +110,14 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias){
 }
 
 
-int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno){
+int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias){
 
 	int pos;
     int N = 3;
     
     char string[50];
     char jogador1 = 'X';
-    char jogador2 = 'O';
+    //char jogador2 = 'O';
     char jogadorAtual;
 
         printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador , miniTabuleiro + 1);

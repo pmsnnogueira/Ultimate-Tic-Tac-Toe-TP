@@ -3,7 +3,7 @@
 
 int jogarComputador(struct dados *tab , int *turno , int *tabVitorias);
 
-int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno);
+int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias );
 
 int botAleatorio(struct dados *tab ,int minitabuleiro, int dimensaoTabuleiro);
 

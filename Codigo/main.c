@@ -19,7 +19,7 @@ int main(void){
 
     //Lista Ligada
     jogadas *lista = NULL;
-    
+    printf("\n\n\n");
     //Inicializar o initRandom()
     initRandom();
 
@@ -57,6 +57,6 @@ int main(void){
     //libertarTabVitorias(tabVitorias);
     
     free(tabVitorias);// nao sei se está bem
-
+    //free(&lista);
     return (0);
 }

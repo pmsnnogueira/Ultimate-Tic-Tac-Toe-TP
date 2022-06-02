@@ -15,7 +15,7 @@ void libertaMatriz(char** p, int nLin){
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz(){
     struct dados *p = NULL;
-    int i, a;
+    int i, a , f;
 
     p = malloc(sizeof(dados) * 9);
     if(p == NULL)
@@ -23,16 +23,27 @@ struct dados* criaMatriz(){
 
 
     for(i = 0 ; i < 9 ; i++){
-        p[i].array = malloc(sizeof(char *) * 3);     //Alocar linhas
+        p[i].array = malloc(sizeof(char *) * 3);     //Alocar linhas para cada minitabuleiro
         if(p[i].array == NULL){
             printf("Erro na alocação de memória!\n");
-            //libertaMatriz(p , 3);
+            
+            for(f = 0 ; f < 9; f++){
+                free(&p[f]);                //Nao sei se está a funcionar
+            }
+            free(p);
             exit (EXIT_FAILURE);
         }
         for(a = 0 ; a < 3 ; a++){
-            p[i].array[a] = malloc(sizeof(char *) *3);  //Alocar Colunas
+            p[i].array[a] = malloc(sizeof(char *) *3);  //Alocar Colunas para cada minitabuleiro
             if(p[i].array[a] == NULL){
                 printf("Erro na alocação de memoria!\n");
+            
+                for(f = 0 ; f < 3 ; f++)
+                    free(p[f].array[f]);
+                for(f = 3 ; f < 9 ; f++)
+                    free(&p[f]);
+                free(p);
+
                 exit (EXIT_FAILURE);
             }
         }
@@ -45,16 +56,6 @@ struct dados* criaMatriz(){
             }
         }
     }
-    /*for(int k = 0 ; k < 3 ; k++){
-            for(int a = 0 ; a < 3 ; a++){
-                p[1].array[k][a] = '1';
-            }
-        }
-
-    p[3].array[1][1] = '3';
-    p[4].array[2][1] = '3';
-    p[5].array[1][1] = '3';*/
-    
     return (p);
 }
 
@@ -176,11 +177,10 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
     int opcao;
     char string[255];
     int miniTabuleiro;
+    int pos;
 
     int jogador = 1;
-    //int ganhou;
 
-   
     while(1){
             if(*turno != 1){
                 mostraMatriz(tab);
@@ -198,9 +198,11 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
             string[strlen(string)-1] = '\0';
             opcao = atoi(string);
             putchar('\n');   
-
+           
             if(opcao < 0 && opcao > 3)
                 printf("\nEscolha uma opcao entre (1 e 3)");
+
+           
             if(opcao == 1){
                 if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
                     while(1){
@@ -227,9 +229,9 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                    }
                 }   //Se não for o primeiro turno
 
-                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno , &lista);
-                printf("Aqui!\n");
-                //imprimirLista(lista);
+                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias  , &pos);
+                insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
+                
                 if(tabVitorias[miniTabuleiro] != 0)
                     miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
 
@@ -241,15 +243,18 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 (*turno)++;
             }
             if(opcao == 2){
-                printf("\nImprimir Lista\n");
-                imprimirLista(lista);
+                if(lista == NULL)
+                    printf("Lista a NULL\n");
+                else{
+                    printf("\nImprimir Lista\n");
+                    imprimirLista(lista);
+                }
             }
         }
 }
 
-int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int turno ,struct jogadas *lista){
+int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int *pos){
 
-	int pos;
     int N = 3;
     
     char string[50];
@@ -262,23 +267,21 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         strcpy(string , " ");  // Meti para limpar a string de varios inputs errados 
         printf("Posição para colocar peca entre (1 e 9): ");
 
-		fgets(string,sizeof(pos),stdin);
-        pos = atoi(string);
+		fgets(string,sizeof(int),stdin);
+        *pos = atoi(string);
+        printf("%d",*pos);
         putchar('\n');
 
-	}while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
+	}while(*pos < 1 || *pos > N*N || tab[miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] != '_');                              //Tenho de corrigir o minitabuleiro, nao esta a mudar na funcao
 
 	if(*jogador == 1){
-		tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador1;
+		tab[miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] = jogador1;
         jogadorAtual = jogador1;
     }
 	else{       //Se for o jogador 2
-        tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador2;
+        tab[miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] = jogador2;
         jogadorAtual = jogador2;
     }   
-
-    lista = insereJogadaFim(lista , miniTabuleiro , *jogador , pos , turno);
-    imprimirLista(lista);
 
     if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro) ){
         //ganhou = jogador;   
@@ -293,7 +296,7 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         //mostraMatriz(tab,9,9);
        //exit(1); 
     }  
-    return (pos-1);
+    return (1);
 }
 
 int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias){
@@ -385,42 +388,43 @@ void escreveResultado(int jogador){
 
 
 //Listas Ligadas
-jogadas* insereJogadaFim(struct jogadas *lista , int miniTabuleiro , int jogador , int posicao , int turno){
+void insereJogadaFim(struct jogadas **lista , int miniTabuleiro , int jogador , int posicao , int turno){
 
-    jogadas *novo , *aux;
+    jogadas *aux = *lista;
 
-    novo = (jogadas*)malloc(sizeof(jogadas));
-    if(novo == NULL){
-        printf("Erro na alocação de memoria\n");
-        return (lista);
-    }
+    if(*lista == NULL){
+        *lista = (jogadas*)malloc(sizeof(lista)); 
+        if(*lista == NULL){
+            printf("Erro a alocar memoria para a lista ligada\n");
+            return;
+        }
+        (*lista)->jogador = jogador;
+        (*lista)->minitabuleiro = miniTabuleiro;
+        (*lista)->posicao = posicao;
+        (*lista)->turno = turno;
+        (*lista)->prox = NULL;
 
-    preencheLista(novo , miniTabuleiro , jogador , posicao , turno);
-    if(lista == NULL)
-        lista = novo;
-    else{
-        aux = lista;
-        while(aux->prox != NULL)
+    }else{
+        while(aux->prox != NULL){
             aux = aux->prox;
-        aux->prox = novo;
-
-    
+        }
+        aux->prox = (jogadas*)malloc(sizeof(lista));
+        if(aux->prox == NULL){
+            //freeLista(lista);                 //Corrigir esta funcao 
+            //Fazer o apagar a lista apagarLista(*lista);
+            printf("Erro a alocar memoria para a lista ligada\n");
+            return;
+        }
+        aux->prox->jogador = jogador;
+        aux->prox->minitabuleiro = miniTabuleiro+1;
+        aux->prox->posicao = posicao;
+        aux->prox->turno = turno;
+        aux->prox->prox = NULL;        
     }
-        putchar('\n');
-        imprimirLista(lista);
-    return (lista);
-
-
-
-       /* preencheLista(novo , miniTabuleiro , jogador , posicao , turno);
-        novo->prox = lista;
-        lista = novo;
-
-        //imprimirLista(lista);
-    return (lista);*/
+    return;
 }
 
-void preencheLista(jogadas *lista  , int miniTabuleiro , int jogador , int posicao , int turno){
+/*void preencheLista(jogadas *lista  , int miniTabuleiro , int jogador , int posicao , int turno){
 
     lista->jogador = jogador;
     lista->minitabuleiro = miniTabuleiro;
@@ -428,9 +432,10 @@ void preencheLista(jogadas *lista  , int miniTabuleiro , int jogador , int posic
     lista->turno = turno;
     lista->prox = NULL;
 
-}
+}*/
 
 void imprimirLista(jogadas *lista){
+    
 
     while(lista != NULL){
         printf("\n#####JOGADAS####\n");
@@ -441,4 +446,15 @@ void imprimirLista(jogadas *lista){
         printf("#####################\n");
         lista = lista->prox;
     }
+}
+
+void freeLista(jogadas* lista){
+    jogadas *aux;
+
+    while(lista != NULL){
+        aux = lista;
+        lista = lista->prox;
+        free(aux);
+    }
+    return;
 }
