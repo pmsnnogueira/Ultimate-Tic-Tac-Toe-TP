@@ -243,12 +243,8 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 (*turno)++;
             }
             if(opcao == 2){
-                if(lista == NULL)
-                    printf("Lista a NULL\n");
-                else{
-                    printf("\nImprimir Lista\n");
-                    imprimirLista(lista);
-                }
+                printf("\nImprimir Lista\n");
+                imprimirLista(lista);
             }
         }
     return (0);
@@ -437,6 +433,10 @@ void insereJogadaFim(struct jogadas **lista , int miniTabuleiro , int jogador , 
 
 void imprimirLista(jogadas *lista){
     
+    if(lista == NULL){
+        printf("\nNão há jogadas anteriores!\n");
+        return;
+    }
 
     while(lista != NULL){
         printf("\n#####JOGADAS####\n");
@@ -447,6 +447,8 @@ void imprimirLista(jogadas *lista){
         printf("#####################\n");
         lista = lista->prox;
     }
+
+   return;
 }
 
 void freeLista(jogadas* lista){
