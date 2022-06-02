@@ -52,5 +52,8 @@ void imprimirLista(jogadas *lista);
 
 void freeLista(jogadas* lista);
 
+//Imprimir lista ao contrario usando recursividade
+void imprimirListaAoContrario(jogadas *lista , int numero);
+
 
 #endif

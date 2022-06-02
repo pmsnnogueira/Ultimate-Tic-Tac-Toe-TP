@@ -244,7 +244,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
             }
             if(opcao == 2){
                 printf("\nImprimir Lista\n");
-                imprimirLista(lista);
+                imprimirListaAoContrario(lista , 5);
             }
         }
     return (0);
@@ -459,5 +459,21 @@ void freeLista(jogadas* lista){
         lista = lista->prox;
         free(aux);
     }
+    return;
+}
+
+void imprimirListaAoContrario(jogadas *lista , int numero){
+
+    if(lista == NULL || numero == 0)
+        return ;
+    imprimirListaAoContrario(lista->prox , numero-1);
+    
+    printf("\n#####JOGADAS####\n");
+    printf("# Turno: %d         #\n",lista->turno);
+    printf("# Minitabuleiro: %d #\n",lista->minitabuleiro);
+    printf("# Jogador: %d       #\n",lista->jogador);
+    printf("# Posicao: %d       #\n",lista->posicao);
+    printf("#####################\n");
+
     return;
 }

@@ -3,6 +3,7 @@
 #include "funcoes.h"
 
 int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista){
+
     int opcao;
     char string[255];
     int miniTabuleiro;
@@ -12,7 +13,6 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
     int posAleatoriaBot;
     //int ganhou;
 
-   
     while(1){
         if(*turno != 1){
             mostraMatriz(tab);
@@ -51,7 +51,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                     fgets(string,sizeof(string)-1,stdin);
                     string[strlen(string)-1] = '\0';
                     miniTabuleiro = atoi(string);      
-                    miniTabuleiro = miniTabuleiro -1;
+                    miniTabuleiro = miniTabuleiro - 1;
                     if(miniTabuleiro >= 0 && miniTabuleiro < 9)    //Validações de tabuleiro
                         break;
 
@@ -59,10 +59,9 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                     
                 }
             }
-            //Se não for o primeiro turno
             miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias  , &pos);
             insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
-            //Apaguei mas é para meter a lista
+            
             if(jogador == 1)
                 jogador = 2;
             else
@@ -70,12 +69,11 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
 
             (*turno)++;
 
-            //Bot
-            posAleatoriaBot = botAleatorio(tab , miniTabuleiro , 9);
-            printf("\n%d\n",posAleatoriaBot);
+            //Agora é o Bot a jogar
+            posAleatoriaBot = botAleatorio(tab , miniTabuleiro , 9);        //PosAleatoria para o bot jogar
 
             tab[miniTabuleiro].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
-            insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);   //Inserir no Nó o jogo
+            insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
         
             if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro)){
                 //ganhou = jogador;   
@@ -92,7 +90,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                     
                     
             }  
-            miniTabuleiro = posAleatoriaBot - 1;        //Proxima posicao do jogo
+            miniTabuleiro = posAleatoriaBot - 1;        //Colocar na var Minitabuleiro o proximo mini onde vai ser jogado
 
             if(tabVitorias[miniTabuleiro] != 0)
             miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
@@ -104,7 +102,6 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
 
             (*turno)++;
         }
-          
         if(opcao == 2){     //Listar Menu    
             printf("\nImprimir Lista\n");
             imprimirLista(lista);
@@ -156,10 +153,11 @@ int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro
 
 int botAleatorio(struct dados *tab ,int minitabuleiro, int dimensaoTabuleiro){
     
+    int nLinhas = 3;
     int aleatorio; 
     do{
         aleatorio = intUniformRnd(1, dimensaoTabuleiro - 1);
-    }while(tab[minitabuleiro].array[(aleatorio-1)/3][(aleatorio-1)%3] != '_');
+    }while(tab[minitabuleiro].array[(aleatorio-1) / nLinhas][(aleatorio-1) % nLinhas] != '_');
     
     return (aleatorio);
 }
