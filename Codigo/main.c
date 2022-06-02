@@ -45,7 +45,7 @@ int main(void){
 
             //Jogar com o computador
             case 2:
-                jogarComputador(matriz , &turno , tabVitorias);
+                jogarComputador(matriz , &turno , tabVitorias , lista);
                 //jogarComputador(matriz , &turno , tabVitorias);
                 putchar('\n');
             break;

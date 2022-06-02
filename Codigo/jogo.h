@@ -1,7 +1,7 @@
 #ifndef JOGO_H
 #define JOGO_H
 
-int jogarComputador(struct dados *tab , int *turno , int *tabVitorias);
+int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista);
 
 int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias );
 

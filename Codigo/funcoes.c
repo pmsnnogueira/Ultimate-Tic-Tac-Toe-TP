@@ -251,6 +251,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 }
             }
         }
+    return (0);
 }
 
 int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int *pos){
@@ -296,7 +297,7 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         //mostraMatriz(tab,9,9);
        //exit(1); 
     }  
-    return (1);
+    return (*pos-1);
 }
 
 int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias){

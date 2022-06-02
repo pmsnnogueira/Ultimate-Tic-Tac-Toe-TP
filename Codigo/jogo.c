@@ -2,11 +2,11 @@
 #include "jogo.h"
 #include "funcoes.h"
 
-int jogarComputador(struct dados *tab , int *turno , int *tabVitorias){
+int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista){
     int opcao;
     char string[255];
     int miniTabuleiro;
-
+    int pos;                //Pos da jogada
     int jogador = 1;
     //int ganhou;
 
@@ -59,7 +59,8 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias){
                    }
                 }   //Se não for o primeiro turno
 
-               // miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias , *turno , lista);
+                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias  , &pos);
+                insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
             //Apaguei mas é para meter a lista
                 if(jogador == 1)
                     jogador = 2;
