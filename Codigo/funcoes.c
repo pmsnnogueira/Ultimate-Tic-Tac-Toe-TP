@@ -179,6 +179,8 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
     int miniTabuleiro;
     int pos;
 
+    int count = 0;
+
     int jogador = 1;
 
     while(1){
@@ -232,7 +234,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias  , &pos);
                 insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
                 
-                if(tabVitorias[miniTabuleiro] != 0)
+                if(tabVitorias[miniTabuleiro] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
                     miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
 
                 if(jogador == 1)
@@ -244,7 +246,8 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
             }
             if(opcao == 2){
                 printf("\nImprimir Lista\n");
-                imprimirListaAoContrario(lista , 5);
+                imprimirListaAoContrario(lista , &count,5);
+                count = 0;
             }
         }
     return (0);
@@ -462,18 +465,21 @@ void freeLista(jogadas* lista){
     return;
 }
 
-void imprimirListaAoContrario(jogadas *lista , int numero){
+void imprimirListaAoContrario(jogadas *lista , int *count ,int numero){
 
-    if(lista == NULL || numero == 0)
+    if(lista == NULL)
         return ;
-    imprimirListaAoContrario(lista->prox , numero-1);
+    imprimirListaAoContrario(lista->prox , count , numero);
     
-    printf("\n#####JOGADAS####\n");
-    printf("# Turno: %d         #\n",lista->turno);
-    printf("# Minitabuleiro: %d #\n",lista->minitabuleiro);
-    printf("# Jogador: %d       #\n",lista->jogador);
-    printf("# Posicao: %d       #\n",lista->posicao);
-    printf("#####################\n");
-
+    (*count)++;
+    if(numero >= *count){           //Apenas vai imprimir as primeiras iterações até atingir o numero pretendido, pq temos de pensar com a recursividade ele vai fazer as coisas ao contrario
+        printf("%d",*count);
+        printf("\n#####JOGADAS####\n");
+        printf("# Turno: %d         #\n",lista->turno);
+        printf("# Minitabuleiro: %d #\n",lista->minitabuleiro);
+        printf("# Jogador: %d       #\n",lista->jogador);
+        printf("# Posicao: %d       #\n",lista->posicao);
+        printf("#####################\n");
+    }
     return;
 }
