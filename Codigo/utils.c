@@ -20,5 +20,4 @@ int probEvento(float prob){
 void apagarEcra()
 {
     system("cls||clear");
-
 }

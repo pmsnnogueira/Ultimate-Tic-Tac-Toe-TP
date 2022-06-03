@@ -19,7 +19,7 @@ int main(void){
 
     //Lista Ligada
     jogadas *lista = NULL;
-    printf("\n\n\n");
+    apagarEcra();
     //Inicializar o initRandom()
     initRandom();
 

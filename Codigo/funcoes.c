@@ -231,7 +231,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                    }
                 }   //Se não for o primeiro turno
 
-                miniTabuleiro = escolhe_jogada(tab , &jogador , miniTabuleiro , tabVitorias  , &pos);
+                escolhe_jogada(tab , &jogador , &miniTabuleiro , tabVitorias  , &pos);
                 insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
                 
                 if(tabVitorias[miniTabuleiro] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
@@ -249,11 +249,14 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 imprimirListaAoContrario(lista , &count,5);
                 count = 0;
             }
+            if(opcao == 3){
+                
+            }
         }
     return (0);
 }
 
-int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias , int *pos){
+int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *tabVitorias , int *pos){
 
     int N = 3;
     
@@ -262,7 +265,7 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
     char jogador2 = 'O';
     char jogadorAtual;
 
-	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador , miniTabuleiro + 1);
+	printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador , *miniTabuleiro + 1);
 	do{
         strcpy(string , " ");  // Meti para limpar a string de varios inputs errados 
         printf("Posição para colocar peca entre (1 e 9): ");
@@ -272,31 +275,33 @@ int escolhe_jogada(struct dados *tab, int *jogador , int miniTabuleiro, int *tab
         printf("%d",*pos);
         putchar('\n');
 
-	}while(*pos < 1 || *pos > N*N || tab[miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] != '_');                              //Tenho de corrigir o minitabuleiro, nao esta a mudar na funcao
+	}while(*pos < 1 || *pos > N*N || tab[*miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] != '_');                              //Tenho de corrigir o minitabuleiro, nao esta a mudar na funcao
 
 	if(*jogador == 1){
-		tab[miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] = jogador1;
+		tab[*miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] = jogador1;
         jogadorAtual = jogador1;
     }
 	else{       //Se for o jogador 2
-        tab[miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] = jogador2;
+        tab[*miniTabuleiro].array[(*pos-1)/N][(*pos-1)%N] = jogador2;
         jogadorAtual = jogador2;
     }   
 
-    if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro) ){
+    if(verificarLinha(tab , *miniTabuleiro) || verificarColuna(tab , *miniTabuleiro) || verificarDiagonal(tab , *miniTabuleiro) ){
         //ganhou = jogador;   
-        tabVitorias[miniTabuleiro] = *jogador;
-        ganharMiniJogo(tab , miniTabuleiro , jogadorAtual);
+        tabVitorias[*miniTabuleiro] = *jogador;
+        ganharMiniJogo(tab , *miniTabuleiro , jogadorAtual);
         
         if(verificarVitoria(tabVitorias , *jogador) ){
             escreveResultado(*jogador);
+            return(1);
         }
         else
-            escreveResultadoMini(*jogador , miniTabuleiro);
+            escreveResultadoMini(*jogador , *miniTabuleiro);
         //mostraMatriz(tab,9,9);
        //exit(1); 
     }  
-    return (*pos-1);
+    *miniTabuleiro = (*pos-1);
+    return (0);
 }
 
 int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias){
@@ -470,7 +475,7 @@ void imprimirListaAoContrario(jogadas *lista , int *count ,int numero){
     if(lista == NULL)
         return ;
     imprimirListaAoContrario(lista->prox , count , numero);
-    
+
     (*count)++;
     if(numero >= *count){           //Apenas vai imprimir as primeiras iterações até atingir o numero pretendido, pq temos de pensar com a recursividade ele vai fazer as coisas ao contrario
         printf("%d",*count);
