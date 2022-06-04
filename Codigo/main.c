@@ -19,6 +19,7 @@ int main(void){
 
     //Lista Ligada
     jogadas *lista = NULL;
+    int numeroNos = 0;
     apagarEcra();
     //Inicializar o initRandom()
     initRandom();
@@ -37,7 +38,7 @@ int main(void){
         switch(opcaoMenu){
             //Jogar com um amigo
             case 1:
-                jogarAmigo(matriz,&turno , tabVitorias , lista);
+                jogarAmigo(matriz,&turno , tabVitorias , lista , &numeroNos);
                
                 putchar('\n');
 
@@ -45,7 +46,7 @@ int main(void){
 
             //Jogar com o computador
             case 2:
-                jogarComputador(matriz , &turno , tabVitorias , lista);
+                jogarComputador(matriz , &turno , tabVitorias , lista , &numeroNos);
                 //jogarComputador(matriz , &turno , tabVitorias);
                 putchar('\n');
             break;

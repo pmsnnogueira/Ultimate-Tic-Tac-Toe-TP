@@ -1,5 +1,7 @@
 #include "utils.h"
 #include "funcoes.h"
+#include "file.h"
+
 
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
 void libertaMatriz(char** p, int nLin){
@@ -173,7 +175,7 @@ int printMenuInical(){
 
 }
 
-int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista){
+int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista , int *numeroNos){
     int opcao;
     char string[255];
     int miniTabuleiro;
@@ -182,6 +184,8 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
     int count = 0;
 
     int jogador = 1;
+
+    //printf("%d",*numeroNos);
 
     while(1){
             if(*turno != 1){
@@ -192,7 +196,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
             printf("\n###### Jogar com Amigo ######\n");
             printf("# 1 - Inserir peça          #\n");
             printf("# 2 - Ver Jogadas           #\n");
-            printf("# 3 - Pause                 #\n");
+            printf("# 3 - Pausar jogo           #\n");
             printf("#############################\n");
             printf("Escolha: ");
 
@@ -232,8 +236,10 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 }   //Se não for o primeiro turno
 
                 escolhe_jogada(tab , &jogador , &miniTabuleiro , tabVitorias  , &pos);
-                insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
-                
+                //Vou ter de meter as verificações das linhas e colunas aqui, fica mais facil
+                                
+                insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
+
                 if(tabVitorias[miniTabuleiro] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
                     miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
 
@@ -250,7 +256,12 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 count = 0;
             }
             if(opcao == 3){
+
+                printf("Guardar o jogo\n");
                 
+                gravarFicheiro(&lista , *numeroNos , "fich.bin");
+
+                return (3);
             }
         }
     return (0);
@@ -391,12 +402,11 @@ void escreveResultado(int jogador){
     printf("\nGanhou o Jogador %d\n",jogador);
 }
 
-
 //Listas Ligadas
-void insereJogadaFim(struct jogadas **lista , int miniTabuleiro , int jogador , int posicao , int turno){
+void insereJogadaFim(struct jogadas **lista , int *numeroNos, int miniTabuleiro , int jogador , int posicao , int turno){
 
     jogadas *aux = *lista;
-
+   
     if(*lista == NULL){
         *lista = (jogadas*)malloc(sizeof(lista)); 
         if(*lista == NULL){
@@ -426,6 +436,7 @@ void insereJogadaFim(struct jogadas **lista , int miniTabuleiro , int jogador , 
         aux->prox->turno = turno;
         aux->prox->prox = NULL;        
     }
+    (*numeroNos)++;
     return;
 }
 

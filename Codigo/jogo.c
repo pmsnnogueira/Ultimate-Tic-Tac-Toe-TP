@@ -2,7 +2,7 @@
 #include "jogo.h"
 #include "funcoes.h"
 
-int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista){
+int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista, int *numeroNos){
 
     int opcao;
     char string[255];
@@ -11,6 +11,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
     int jogador = 1;
     int dimensao = 3;
     int posAleatoriaBot;
+    int count = 0;
     //int ganhou;
 
     while(1){
@@ -60,7 +61,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                 }
             }
             escolhe_jogada(tab , &jogador , &miniTabuleiro , tabVitorias  , &pos);
-            insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);
+            insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);
             
             if(jogador == 1)
                 jogador = 2;
@@ -73,7 +74,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
             posAleatoriaBot = botAleatorio(tab , miniTabuleiro , 9);        //PosAleatoria para o bot jogar
 
             tab[miniTabuleiro].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
-            insereJogadaFim(&lista , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
+            insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
         
             if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro)){
                 //ganhou = jogador;   
@@ -104,7 +105,9 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
         }
         if(opcao == 2){     //Listar Menu    
             printf("\nImprimir Lista\n");
-            imprimirLista(lista);
+            //Falta pedir ao utiilizador o numero de vezes que pretende listar as jogadas
+            imprimirListaAoContrario(lista , &count , 5);
+            count = 0;  //Reinicializar o contador
         }      
     }
 

@@ -24,7 +24,7 @@ int printMenuInical();
 
 int menuInicial();
 
-int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista);
+int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista , int *numeroNos);
 
 int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *tabVitorias , int *pos);
 
@@ -44,7 +44,7 @@ void escreveResultadoMini(int jogador , int miniTabuleiro);
 
 void escreveResultado(int jogador);
 
-void insereJogadaFim(struct jogadas **lista , int miniTabuleiro , int jogador , int posicao , int turno);
+void insereJogadaFim(struct jogadas **lista , int *numeroNos ,int miniTabuleiro , int jogador , int posicao , int turno);
 
 void preencheLista(jogadas *lista  , int miniTabuleiro , int jogador , int posicao , int turno);
 
