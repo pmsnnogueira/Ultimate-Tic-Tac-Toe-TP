@@ -1,35 +1,33 @@
 #include "utils.h"
 #include "file.h"
+#include "funcoes.h"
 
-int gravarFicheiro(jogadas **lista , int numeroJogadas, char *nome){
+int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
 
     FILE *fp;
-    jogadas *aux = *lista;
-    //int res;
-    int i;
-
+    jogadas *aux = lista;
     fp = fopen(nome,"wb");
     if(fp == NULL){
         printf("\n<ERRO> ao abrir o ficheiro para guardar\n");
         return (1); 
     }
-
     
     while(aux != NULL){
-        fwrite(aux , sizeof(jogadas) , 1 , fp);
+        fwrite(&aux , sizeof(jogadas) , 1 , fp);
         aux = aux->prox;
     }
 
-
-    printf("Sucesso\n");
+    printf("Jogo guardado com sucesso\n");
     fclose(fp);
+    lerFicheiro(&lista , nome);
     return (0);
 }
 
-jogadas* lerFicheiro(char *nome){
+void lerFicheiro(jogadas* lista , char *nome){
 
     FILE *fp;
     jogadas *tmp;
+    int res;
     fp = fopen(nome , "r");
     if(fp == NULL){
 
@@ -38,9 +36,21 @@ jogadas* lerFicheiro(char *nome){
     }
 
     while(fread(tmp , sizeof(jogadas) , 1 , fp)){
-        //if()
+        
+        
     }
 
 
+    fclose(fp);
+
+   // printf("ola %d\n",res);
     //return (lista);
+}
+
+void insr(jogadas **lista){
+
+    jogadas *p;
+
+    p = (jogadas*)malloc(sizeof(jogadas));
+
 }

@@ -259,7 +259,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
 
                 printf("Guardar o jogo\n");
                 
-                gravarFicheiro(&lista , *numeroNos , "fich.bin");
+                gravarFicheiro(lista , *numeroNos , "fich.bin");
 
                 return (3);
             }
