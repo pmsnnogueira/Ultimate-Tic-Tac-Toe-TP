@@ -26,7 +26,7 @@ int menuInicial();
 
 int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista , int *numeroNos);
 
-int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *tabVitorias , int *pos);
+int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *pos);
 
 int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias);
 

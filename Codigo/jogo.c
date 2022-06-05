@@ -60,7 +60,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                     
                 }
             }
-            escolhe_jogada(tab , &jogador , &miniTabuleiro , tabVitorias  , &pos);
+            escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
             insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);
             
             if(jogador == 1)

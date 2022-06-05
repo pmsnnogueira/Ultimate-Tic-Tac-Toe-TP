@@ -7,8 +7,7 @@
 #define COLUNAS 3
 #define DIMENSAOTABULEIRO 9
 
-#define MarcaX 'X'
-#define MARCAO 'O'
+
 
 int main(void){
 

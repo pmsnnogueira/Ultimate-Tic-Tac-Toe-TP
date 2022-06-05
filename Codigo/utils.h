@@ -5,6 +5,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#define MARCAX 'X'
+#define MARCAO 'O'
+
 typedef struct dados{
     int nTab;
     char **array;

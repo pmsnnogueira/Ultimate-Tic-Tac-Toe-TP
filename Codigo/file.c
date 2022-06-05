@@ -19,13 +19,13 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
 
     printf("Jogo guardado com sucesso\n");
     fclose(fp);
-    lerFicheiro(&lista , nome);
+   // lerFicheiro(&lista , nome);
     return (0);
 }
 
 void lerFicheiro(jogadas* lista , char *nome){
 
-    FILE *fp;
+    /*FILE *fp;
     jogadas *tmp;
     int res;
     fp = fopen(nome , "r");
@@ -41,16 +41,16 @@ void lerFicheiro(jogadas* lista , char *nome){
     }
 
 
-    fclose(fp);
+    fclose(fp);*/
 
    // printf("ola %d\n",res);
     //return (lista);
 }
 
-void insr(jogadas **lista){
+/*void insr(jogadas **lista){
 
     jogadas *p;
 
     p = (jogadas*)malloc(sizeof(jogadas));
 
-}
+}*/

@@ -4,6 +4,8 @@
 #include "funcoes.h"
 #include "jogo.h"
 
+
+
 void initRandom(){
     srand(time(NULL));
 }
