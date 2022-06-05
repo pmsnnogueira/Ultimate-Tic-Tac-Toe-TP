@@ -187,106 +187,105 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
     char jogadorCaracter = MARCAX;
 
 
-    while(1){
-            if(*turno != 1){
+    while(*turno < 9 * 9){
+        if(*turno != 1){
                 mostraMatriz(tab);
+        }
+
+        printf("\n[TURNO %d]",*turno);
+        printf("\n###### Jogar com Amigo ######\n");
+        printf("# 1 - Inserir peça          #\n");
+        printf("# 2 - Ver Jogadas           #\n");
+        printf("# 3 - Pausar jogo           #\n");
+        printf("#############################\n");
+        printf("Escolha: ");
+
+        fgets(string,sizeof(string)-1,stdin);
+        string[strlen(string)-1] = '\0';
+        opcao = atoi(string);
+        putchar('\n');   
+        
+        if(opcao < 0 && opcao > 3)
+            printf("\nEscolha uma opcao entre (1 e 3)");
+
+        if(opcao == 1){
+            if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
+                while(1){
+                    printf("\
+                    *-----*-----*-----*\n\
+                    |  1  |  2  |  3  |\n\
+                    *-----*-----*-----*\n\
+                    |  4  |  5  |  6  |\n\
+                    *-----*-----*-----*\n\
+                    |  7  |  8  |  9  |\n\
+                    *-----*-----*-----*\n");
+
+                    printf("\nIntroduza o mini tabuleiro a jogar: ");
+                    
+                    fgets(string,sizeof(string)-1,stdin);
+                    string[strlen(string)-1] = '\0';
+                    miniTabuleiro = atoi(string);      
+                    miniTabuleiro = miniTabuleiro;
+                    if(miniTabuleiro > 0 && miniTabuleiro <= 9)    //Validações de tabuleiro
+                        break;
+
+                    printf("\nIntroduza um mini Tabuleiro válido (entre 1 e 9)\n");
+                    
+                }
+            }   //Se não for o primeiro turno
+
+            escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
+            insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
+
+            if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
+                tabVitorias[miniTabuleiro-1] = jogador;
+                ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
+                if(verificarVitoria(tabVitorias , jogador) == 1){
+                    escreveResultado(jogador);
+                    return (1);
+                }
+                else
+                    escreveResultadoMini(jogador , miniTabuleiro-1);
+                //mostraMatriz(tab,9,9);
+            }  
+
+            if(tabVitorias[miniTabuleiro-1] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
+
+            if(jogador == 1){
+                jogador = 2;
+                jogadorCaracter = MARCAO;
             }
-
-            printf("\n[TURNO %d]",*turno);
-            printf("\n###### Jogar com Amigo ######\n");
-            printf("# 1 - Inserir peça          #\n");
-            printf("# 2 - Ver Jogadas           #\n");
-            printf("# 3 - Pausar jogo           #\n");
-            printf("#############################\n");
-            printf("Escolha: ");
-
+            else{
+                jogador = 1;
+                jogadorCaracter = MARCAX;
+            }
+            
+            miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
+            (*turno)++;
+        }
+        if(opcao == 2){
+            printf("\nImprimir Lista\n");
+            printf("Escolha o numero de jogadas a visualizar: ");
             fgets(string,sizeof(string)-1,stdin);
             string[strlen(string)-1] = '\0';
             opcao = atoi(string);
             putchar('\n');   
-           
-            if(opcao < 0 && opcao > 3)
-                printf("\nEscolha uma opcao entre (1 e 3)");
 
-           
-            if(opcao == 1){
-                if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
-                    while(1){
-                        printf("\
-                        *-----*-----*-----*\n\
-                        |  1  |  2  |  3  |\n\
-                        *-----*-----*-----*\n\
-                        |  4  |  5  |  6  |\n\
-                        *-----*-----*-----*\n\
-                        |  7  |  8  |  9  |\n\
-                        *-----*-----*-----*\n");
-
-                        printf("\nIntroduza o mini tabuleiro a jogar: ");
-                       
-                        fgets(string,sizeof(string)-1,stdin);
-                        string[strlen(string)-1] = '\0';
-                        miniTabuleiro = atoi(string);      
-                        miniTabuleiro = miniTabuleiro;
-                        if(miniTabuleiro > 0 && miniTabuleiro <= 9)    //Validações de tabuleiro
-                            break;
-
-                        printf("\nIntroduza um mini Tabuleiro válido (entre 1 e 9)\n");
-                        
-                   }
-                }   //Se não for o primeiro turno
-
-
-                escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
-                insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
-                //Vou ter de meter as verificações das linhas e colunas aqui, fica mais facil
-
-
-                if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
-                    //ganhou = jogador;   
-                    tabVitorias[miniTabuleiro-1] = jogador;
-                    ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-                    
-                    if(verificarVitoria(tabVitorias , jogador) ){
-                        escreveResultado(jogador);
-                        return(1);
-                    }
-                    else
-                        escreveResultadoMini(jogador , miniTabuleiro-1);
-                    //mostraMatriz(tab,9,9);
-                //exit(1); 
-                }  
-
-                
-
-                if(tabVitorias[miniTabuleiro-1] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
-                    miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
-
-                if(jogador == 1){
-                    jogador = 2;
-                    jogadorCaracter = MARCAO;
-                }
-                else{
-                    jogador = 1;
-                    jogadorCaracter = MARCAX;
-                }
-                
-                miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
-                (*turno)++;
-            }
-            if(opcao == 2){
-                printf("\nImprimir Lista\n");
-                imprimirListaAoContrario(lista , &count,5);
-                count = 0;
-            }
-            if(opcao == 3){
-
-                printf("Guardar o jogo\n");
-                
-                gravarFicheiro(lista , *numeroNos , "fich.bin");
-
-                return (3);
-            }
+            imprimirListaAoContrario(lista , &count,opcao);
+            count = 0;
         }
+        if(opcao == 3){
+
+            printf("Guardar o jogo\n");
+            
+            gravarFicheiro(lista , *numeroNos , "fich.bin");
+
+            return (3);
+        }
+    }
+
+    printf("Jogo Empatado");
     return (0);
 }
 
@@ -394,7 +393,7 @@ int verificarVitoria(int *tab , int jogador){
             soma += 1;
     }
     if(soma == 3)
-        return (jogador);
+        return (1);
     
     return (0);
 }

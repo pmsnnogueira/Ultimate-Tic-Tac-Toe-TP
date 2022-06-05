@@ -38,7 +38,9 @@ int main(void){
             //Jogar com um amigo
             case 1:
                 jogarAmigo(matriz,&turno , tabVitorias , lista , &numeroNos);
-               
+                
+                //Guardar qualquer coisa já n me lembro
+                printf("");
                 putchar('\n');
 
             break;

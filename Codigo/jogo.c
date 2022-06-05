@@ -9,9 +9,11 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
     int miniTabuleiro;
     int pos;                //Pos da jogada
     int jogador = 1;
+    char jogadorCaracter = MARCAX;
     int dimensao = 3;
     int posAleatoriaBot;
     int count = 0;
+
     //int ganhou;
 
     while(1){
@@ -61,54 +63,77 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                 }
             }
             escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
-            insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);
-            
-            if(jogador == 1)
-                jogador = 2;
-            else
-                jogador = 1;
+            insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
+            if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
+                tabVitorias[miniTabuleiro-1] = jogador;
+                ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
+                if(verificarVitoria(tabVitorias , jogador) == 1){
+                    escreveResultado(jogador);
+                    return (1);
+                }
+                else
+                    escreveResultadoMini(jogador , miniTabuleiro-1);
+                //mostraMatriz(tab,9,9);
+            }  
+
+            if(tabVitorias[miniTabuleiro-1] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
+
+            if(jogador == 1){
+                jogador = 2;
+                jogadorCaracter = MARCAO;
+            }
+            else{
+                jogador = 1;
+                jogadorCaracter = MARCAX;
+            }
+            
+            miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
             (*turno)++;
 
             //Agora é o Bot a jogar
-            posAleatoriaBot = botAleatorio(tab , miniTabuleiro , 9);        //PosAleatoria para o bot jogar
+            posAleatoriaBot = botAleatorio(tab , miniTabuleiro , 8);        //PosAleatoria para o bot jogar
 
-            tab[miniTabuleiro].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
-            insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
+            tab[miniTabuleiro-1].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
+            insereJogadaFim(&lista , numeroNos , miniTabuleiro-1 , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
         
-            if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro)){
+            if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1)){
                 //ganhou = jogador;   
-                tabVitorias[miniTabuleiro] = jogador;
+                tabVitorias[miniTabuleiro-1] = jogador;
                 printf("O computador Ganhou o minitabuleiro!\n");
-                ganharMiniJogo(tab , miniTabuleiro ,'O');
+                ganharMiniJogo(tab , miniTabuleiro-1 ,'O');
                 
                 if(verificarVitoria(tabVitorias , jogador) ){
                     printf("Ganharam o jogo!\n");
                     exit (1);
                 }
                 else
-                    escreveResultadoMini(jogador , miniTabuleiro);
-                    
-                    
+                    escreveResultadoMini(jogador , miniTabuleiro-1);
             }  
-            miniTabuleiro = posAleatoriaBot - 1;        //Colocar na var Minitabuleiro o proximo mini onde vai ser jogado
-
-            if(tabVitorias[miniTabuleiro] != 0)
-            miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
+            
+            if(tabVitorias[miniTabuleiro-1] != 0)
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
 
             if(jogador == 1)
                 jogador = 2;
             else
                 jogador = 1;
 
+            miniTabuleiro = posAleatoriaBot;        //Colocar na var Minitabuleiro o proximo mini onde vai ser jogado
             (*turno)++;
         }
-        if(opcao == 2){     //Listar Menu    
+        if(opcao == 2){
             printf("\nImprimir Lista\n");
-            //Falta pedir ao utiilizador o numero de vezes que pretende listar as jogadas
-            imprimirListaAoContrario(lista , &count , 5);
-            count = 0;  //Reinicializar o contador
-        }      
+            imprimirListaAoContrario(lista , &count,5);
+            count = 0;
+        }
+        if(opcao == 3){
+
+            printf("Guardar o jogo\n");
+            gravarFicheiro(lista , *numeroNos , "fich.bin");
+            return (3);
+        }   
     }
 
     return(0);
