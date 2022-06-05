@@ -54,8 +54,8 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
                     fgets(string,sizeof(string)-1,stdin);
                     string[strlen(string)-1] = '\0';
                     miniTabuleiro = atoi(string);      
-                    miniTabuleiro = miniTabuleiro - 1;
-                    if(miniTabuleiro >= 0 && miniTabuleiro < 9)    //Validações de tabuleiro
+                    miniTabuleiro = miniTabuleiro;
+                    if(miniTabuleiro > 0 && miniTabuleiro <= 9)    //Validações de tabuleiro
                         break;
 
                     printf("\nIntroduza um mini Tabuleiro válido (entre 1 e 9)\n");
@@ -93,10 +93,10 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
             (*turno)++;
 
             //Agora é o Bot a jogar
-            posAleatoriaBot = botAleatorio(tab , miniTabuleiro , 8);        //PosAleatoria para o bot jogar
+            posAleatoriaBot = botAleatorio(tab , miniTabuleiro-1 , 9);        //PosAleatoria para o bot jogar
 
             tab[miniTabuleiro-1].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
-            insereJogadaFim(&lista , numeroNos , miniTabuleiro-1 , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
+            insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
         
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1)){
                 //ganhou = jogador;   
@@ -164,18 +164,7 @@ int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro
     tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador1;
     jogadorAtual = jogador1; 
 
-    if(verificarLinha(tab , miniTabuleiro) || verificarColuna(tab , miniTabuleiro) || verificarDiagonal(tab , miniTabuleiro) ){
-        //ganhou = jogador;   
-        tabVitorias[miniTabuleiro] = *jogador;
-        ganharMiniJogo(tab , miniTabuleiro , jogadorAtual);
-        
-        if(verificarVitoria(tabVitorias , *jogador) ){
-
-        }
-        else
-            escreveResultadoMini(*jogador , miniTabuleiro);
-    }  
-    return (pos-1);
+    return (0);
 }
 
 
@@ -184,8 +173,7 @@ int botAleatorio(struct dados *tab ,int minitabuleiro, int dimensaoTabuleiro){
     int nLinhas = 3;
     int aleatorio; 
     do{
-        aleatorio = intUniformRnd(1, dimensaoTabuleiro - 1);
+        aleatorio = intUniformRnd(1, dimensaoTabuleiro);
     }while(tab[minitabuleiro].array[(aleatorio-1) / nLinhas][(aleatorio-1) % nLinhas] != '_');
-    
     return (aleatorio);
 }

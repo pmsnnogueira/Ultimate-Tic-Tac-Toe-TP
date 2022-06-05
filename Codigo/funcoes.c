@@ -4,13 +4,20 @@
 
 
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
-void libertaMatriz(char** p, int nLin){
+void libertaMatriz(struct dados* tab){
 
-    int i;
-
-    for(i=0; i<nLin; i++)
-        free(p[i]);
-    free(p);
+    int i , l , c , m ;
+    for(m = 0 ; m < 9 ; m++){
+        for(l = 0 ; l < 3 ; l++){
+            for(c=0; c < 3; c++)
+                free(tab[m].array[l][c]);
+            free(tab[m].array[l]);
+        }
+        free(tab[m].array);
+    }
+    
+    free(tab);
+    return;
 }
 
 // Cria uma matriz dinâmica de caracteres  com nLin linhas e nCol colunas
@@ -323,7 +330,7 @@ int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias){
     
     int aleatorio; 
     do{
-        aleatorio = intUniformRnd(1, dimensaotabVitorias-1);
+        aleatorio = intUniformRnd(1, dimensaotabVitorias);
     }while(tabVitorias[aleatorio] != 0);
 
     return (aleatorio);

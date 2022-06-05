@@ -2,7 +2,7 @@
 #define FUNCOES_H
 
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
-void libertaMatriz(char** p, int nLin);
+void libertaMatriz(struct dados* tab);
 
 // Cria uma matriz dinâmica de caracteres  com nLin linhas e nCol colunas
 // Devolve endereço inicial da matriz

@@ -55,7 +55,7 @@ int main(void){
     }while(turno < 9 * 9);
 
     //Libertar a memoria da matriz
-    //libertaMatriz(matriz , LINHAS);
+    libertaMatriz(matriz);
     //libertarTabVitorias(tabVitorias);
     
     free(tabVitorias);// nao sei se está bem
