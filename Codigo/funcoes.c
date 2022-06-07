@@ -6,11 +6,11 @@
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
 void libertaMatriz(struct dados* tab){
 
-    int i , l , c , m ;
+    int /*i ,*/ l , c , m ;
     for(m = 0 ; m < 9 ; m++){
         for(l = 0 ; l < 3 ; l++){
             for(c=0; c < 3; c++)
-                free(tab[m].array[l][c]);
+                //free(tab[m].array[l][c]);
             free(tab[m].array[l]);
         }
         free(tab[m].array);
@@ -68,19 +68,29 @@ struct dados* criaMatriz(){
     return (p);
 }
 
-int *criarTabVitorias(int dimensao){
+int **criarTabVitorias(int dimensao){
     
-    int *tab = NULL;
-    int i;
+    int **tab = NULL;
+    int i , l,c;
     
     tab = malloc(sizeof(int) * dimensao);
     if(tab == NULL){
         printf("Erro na alocacao de memoria no tabuleiro Vitorias\n");
         exit (EXIT_FAILURE);
     }
+    for(i = 0 ; i < dimensao ; i++){
+        tab[i] = malloc(sizeof(int) * dimensao);
+        if(tab[i] == NULL){
+            printf("Erro na alocacao de memoria no tabuleiro Vitorias\n");
+            free(tab);
+            exit(EXIT_FAILURE);
+        }
 
-    for(i = 0; i < dimensao ; i++)
-        tab[i] = 0;
+    }
+
+    for(l = 0; l < dimensao ; l++)
+        for(c = 0 ; c < dimensao ; c++)
+            tab[l][c] = 0;
 
     return (tab);
 }
@@ -182,7 +192,7 @@ int printMenuInical(){
 
 }
 
-int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista , int *numeroNos){
+int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas *lista , int *numeroNos){
     int opcao;
     char string[255];
     int miniTabuleiro;
@@ -193,12 +203,11 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
     int jogador = 1;
     char jogadorCaracter = MARCAX;
 
-
     while(*turno < 9 * 9){
         if(*turno != 1){
                 mostraMatriz(tab);
         }
-
+        imprimirTabuleiroVitorias(tabVitorias);
         printf("\n[TURNO %d]",*turno);
         printf("\n###### Jogar com Amigo ######\n");
         printf("# 1 - Inserir peça          #\n");
@@ -245,9 +254,10 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
             insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
-                tabVitorias[miniTabuleiro-1] = jogador;
+                tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
+                imprimirTabuleiroVitorias(tabVitorias);
                 ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-                if(verificarVitoria(tabVitorias , jogador) == 1){
+                if(verificarVitoria(*tabVitorias , jogador) == 1){
                     escreveResultado(jogador);
                     return (1);
                 }
@@ -255,9 +265,14 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                     escreveResultadoMini(jogador , miniTabuleiro-1);
                 //mostraMatriz(tab,9,9);
             }  
-
-            if(tabVitorias[miniTabuleiro-1] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
-                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
+            
+            //printf("\t%d %d %d\t\n",miniTabuleiro,(miniTabuleiro-1)/3 , (miniTabuleiro-1)%3);
+            if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 2);
+                
+            }else{
+                miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
+            }
 
             if(jogador == 1){
                 jogador = 2;
@@ -267,8 +282,7 @@ int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas
                 jogador = 1;
                 jogadorCaracter = MARCAX;
             }
-            
-            miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
+           
             (*turno)++;
         }
         if(opcao == 2){
@@ -326,15 +340,19 @@ int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *po
     return (0);
 }
 
-int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias){
+int minitabuleiroAleatorio(int **tabVitorias , int dimensaotabVitorias){
     
-    int aleatorio; 
+    int posx = 0;
+    int posy = 0;
+
     do{
-        aleatorio = intUniformRnd(1, dimensaotabVitorias);
-    }while(tabVitorias[aleatorio] != 0);
 
-    return (aleatorio);
-
+        posx = intUniformRnd(1, dimensaotabVitorias);              //Tenho de fazer isto para dar para ser linhas e colunas
+        posy = intUniformRnd(1, dimensaotabVitorias);              //Tenho de fazer isto para dar para ser linhas e colunas
+        printf("%d %d",posx , posy);
+    }while(tabVitorias[posx][posy] != 0);                              //Possivelmente fazer dois ciclos um para o x e outro para o y
+                                                                    //Ou meter duas variaveis que façam aleatoriamente a cena
+    return (posx*posy);
 }
 
 void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter){
@@ -509,4 +527,14 @@ void imprimirListaAoContrario(jogadas *lista , int *count ,int numero){
         printf("####################\n");
     }
     return;
+}
+
+void imprimirTabuleiroVitorias(int **tabVitorias){
+
+    putchar('\n');
+    for(int l = 0 ; l < 3 ; l++){
+        for(int c = 0 ; c < 3 ; c++)
+            printf("|%d" , tabVitorias[l][c]);
+        putchar('\n');
+    }
 }

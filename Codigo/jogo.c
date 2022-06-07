@@ -1,8 +1,9 @@
 #include "utils.h"
 #include "jogo.h"
 #include "funcoes.h"
+#include "file.h"
 
-int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista, int *numeroNos){
+int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas *lista, int *numeroNos){
 
     int opcao;
     char string[255];
@@ -66,9 +67,9 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
             insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
-                tabVitorias[miniTabuleiro-1] = jogador;
+                tabVitorias[miniTabuleiro-1][miniTabuleiro-1] = jogador;
                 ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-                if(verificarVitoria(tabVitorias , jogador) == 1){
+                if(verificarVitoria(*tabVitorias , jogador) == 1){
                     escreveResultado(jogador);
                     return (1);
                 }
@@ -78,7 +79,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
             }  
 
             if(tabVitorias[miniTabuleiro-1] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
-                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 3);
 
             if(jogador == 1){
                 jogador = 2;
@@ -100,11 +101,11 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
         
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1)){
                 //ganhou = jogador;   
-                tabVitorias[miniTabuleiro-1] = jogador;
+                tabVitorias[miniTabuleiro-1][miniTabuleiro-1] = jogador;
                 printf("O computador Ganhou o minitabuleiro!\n");
                 ganharMiniJogo(tab , miniTabuleiro-1 ,'O');
                 
-                if(verificarVitoria(tabVitorias , jogador) ){
+                if(verificarVitoria(*tabVitorias , jogador) ){
                     printf("Ganharam o jogo!\n");
                     exit (1);
                 }
@@ -113,7 +114,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
             }  
             
             if(tabVitorias[miniTabuleiro-1] != 0)
-                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 8);
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 3);
 
             if(jogador == 1)
                 jogador = 2;
@@ -140,7 +141,7 @@ int jogarComputador(struct dados *tab , int *turno , int *tabVitorias ,struct jo
 }
 
 
-int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro, int *tabVitorias){
+int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro){
 
 	int pos;
     int N = 3;
@@ -148,7 +149,7 @@ int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro
     char string[50];
     char jogador1 = 'X';
     //char jogador2 = 'O';
-    char jogadorAtual;
+    //char jogadorAtual;
 
         printf("\nÉ a vez do jogador %d [Mini tabuleiro: %d]\n", *jogador , miniTabuleiro + 1);
     do{
@@ -162,7 +163,7 @@ int escolhe_jogadaComputador(struct dados *tab, int *jogador , int miniTabuleiro
     }while(pos<1 || pos > N*N || tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] != '_');
 
     tab[miniTabuleiro].array[(pos-1)/N][(pos-1)%N] = jogador1;
-    jogadorAtual = jogador1; 
+    //jogadorAtual = jogador1; 
 
     return (0);
 }

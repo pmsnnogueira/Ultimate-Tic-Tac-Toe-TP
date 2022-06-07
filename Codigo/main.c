@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "funcoes.h"
 #include "jogo.h"
+#include "file.h"
 
 //Variaveis Globais
 #define LINHAS 3
@@ -14,7 +15,7 @@ int main(void){
     int opcaoMenu;
     struct dados *matriz;
     int turno = 1;
-    int *tabVitorias = NULL;
+    int **tabVitorias = NULL;
 
     //Lista Ligada
     jogadas *lista = NULL;
@@ -30,17 +31,19 @@ int main(void){
         return (1);
     }
 
-    tabVitorias = criarTabVitorias(DIMENSAOTABULEIRO);
+    tabVitorias = criarTabVitorias(3);
     //MenuInicial
     opcaoMenu = menuInicial();
     do{
         switch(opcaoMenu){
             //Jogar com um amigo
             case 1:
+
                 jogarAmigo(matriz,&turno , tabVitorias , lista , &numeroNos);
                 
-                //Guardar qualquer coisa já n me lembro
-                printf("");
+                //Guardar a lista ligada num ficheiro de texto
+                guardarFinalJogo(lista);
+
                 putchar('\n');
 
             break;

@@ -12,39 +12,61 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
         return (1); 
     }
     
+    fwrite(&numeroJogadas , sizeof(int) , 1 , fp);
     while(aux != NULL){
-        fwrite(&aux , sizeof(jogadas) , 1 , fp);
+        /*//printf("ola\n");
+        fwrite(aux->prox , sizeof(jogadas) , 1 , fp);
+        //printf("ola");
+        //aux = aux->prox;
+        i++;*/
+        fwrite(&aux->turno , sizeof(int) , 1 , fp);
+        fwrite(&aux->minitabuleiro , sizeof(int) , 1 , fp);                 //Vou ter de usar este acho eu, 
+        fwrite(&aux->jogador , sizeof(int) , 1 , fp);                       //Na aula o stor pedeiu para estudarmos o exemplo da lista duplamente ligada
+        fwrite(&aux->posicao , sizeof(int) , 1 , fp);
+        fwrite(&aux->prox , sizeof(int) , 1 , fp);
+        
         aux = aux->prox;
     }
 
-    printf("Jogo guardado com sucesso\n");
+    printf("Jogo guardado com sucesso com %d jogadas\n",numeroJogadas);
     fclose(fp);
-   // lerFicheiro(&lista , nome);
+    lerFicheiro(nome);
+    
     return (0);
 }
 
-void lerFicheiro(jogadas* lista , char *nome){
+void lerFicheiro(char *nome){
 
-    /*FILE *fp;
-    jogadas *tmp;
-    int res;
-    fp = fopen(nome , "r");
+    FILE *fp;
+    jogadas tmp;
+    int numeroJogadas = 0;
+    
+    fp = fopen(nome , "rb");
     if(fp == NULL){
 
         printf("Erro ao abrir o ficheiro\n");
-        //return;
+        return;
     }
 
-    while(fread(tmp , sizeof(jogadas) , 1 , fp)){
-        
-        
-    }
+    fread(&numeroJogadas , sizeof(int) , 1 , fp);
+    
+    fread(&tmp.turno , sizeof(int) , 1 , fp);
+    fread(&tmp.minitabuleiro , sizeof(int) , 1 , fp);
+    fread(&tmp.jogador , sizeof(int) , 1 , fp);
+    fread(&tmp.posicao , sizeof(int) , 1 , fp);
+    //fread(&tmp , sizeof(jogadas) , numeroJogadas , fp);
+
+    printf("Numero jogadas a ler: %d\n",numeroJogadas);
+    printf("\nA ler a lista...\n");
+    //imprimirLista(&tmp);
+    printf("\n");
 
 
-    fclose(fp);*/
-
-   // printf("ola %d\n",res);
+    fclose(fp);
+    printf("Aqui");
+    
     //return (lista);
+    return;
 }
 
 /*void insr(jogadas **lista){
@@ -54,3 +76,35 @@ void lerFicheiro(jogadas* lista , char *nome){
     p = (jogadas*)malloc(sizeof(jogadas));
 
 }*/
+
+
+//Guardar jogo em Ficheiro de texto
+
+void guardarFinalJogo(jogadas *lista){
+
+    char nome[100];
+    FILE *fp;
+    jogadas *aux = lista;
+
+    printf("Introduza um nome para o ficheiro onde o jogo vai ser guardado: ");
+    fgets(nome,sizeof(nome)-1,stdin);
+    nome[strlen(nome)-1] = '\0';
+
+    fp = fopen(nome , "wt");
+    if(fp == NULL){
+        printf("\nErro ao abrir o ficheiro para guardar o jogo!\n");
+        return ;
+    }
+
+    while(aux != NULL){
+        fprintf(fp , "%d" , lista->turno);
+        fprintf(fp , "%d" , lista->minitabuleiro);
+        fprintf(fp , "%d" , lista->jogador);
+        fprintf(fp , "%d" , lista->posicao);
+        aux = aux->prox;
+    }
+
+    
+    fclose(fp);
+    return;
+}

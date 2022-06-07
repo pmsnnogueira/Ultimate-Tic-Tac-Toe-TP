@@ -8,7 +8,7 @@ void libertaMatriz(struct dados* tab);
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz();
 
-int *criarTabVitorias(int dimensao);
+int **criarTabVitorias(int dimensao);
 
 // Imprime o conteúdo de uma matriz dinâmica de caracteres
 void mostraMatriz(struct dados *tab);
@@ -24,11 +24,11 @@ int printMenuInical();
 
 int menuInicial();
 
-int jogarAmigo(struct dados *tab , int *turno , int *tabVitorias ,struct jogadas *lista , int *numeroNos);
+int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas *lista , int *numeroNos);
 
 int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *pos);
 
-int minitabuleiroAleatorio(int *tabVitorias , int dimensaotabVitorias);
+int minitabuleiroAleatorio(int **tabVitorias , int dimensaotabVitorias);
 
 int verificarLinha(struct dados *tab , int miniTabuleiro);
 
@@ -54,6 +54,8 @@ void freeLista(jogadas* lista);
 
 //Imprimir lista ao contrario usando recursividade
 void imprimirListaAoContrario(jogadas *lista , int *count ,int numero);
+
+void imprimirTabuleiroVitorias(int **tabVitorias);
 
 
 #endif
