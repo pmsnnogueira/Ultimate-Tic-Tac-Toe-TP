@@ -36,7 +36,7 @@ int verificarColuna(struct dados *tab , int miniTabuleiro);
 
 int verificarDiagonal(struct dados *tab , int miniTabuleiro);
 
-int verificarVitoria(int *tab , int jogador);
+int verificarVitoria(int **tabVitorias );
 
 void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter);
 

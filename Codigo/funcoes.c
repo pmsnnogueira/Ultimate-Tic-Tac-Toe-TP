@@ -207,7 +207,8 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
         if(*turno != 1){
                 mostraMatriz(tab);
         }
-        imprimirTabuleiroVitorias(tabVitorias);
+
+        //imprimirTabuleiroVitorias(tabVitorias);
         printf("\n[TURNO %d]",*turno);
         printf("\n###### Jogar com Amigo ######\n");
         printf("# 1 - Inserir peça          #\n");
@@ -257,7 +258,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
                 tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
                 imprimirTabuleiroVitorias(tabVitorias);
                 ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-                if(verificarVitoria(*tabVitorias , jogador) == 1){
+                if(verificarVitoria(tabVitorias) == 1){
                     escreveResultado(jogador);
                     return (1);
                 }
@@ -266,9 +267,12 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
                 //mostraMatriz(tab,9,9);
             }  
             
-            //printf("\t%d %d %d\t\n",miniTabuleiro,(miniTabuleiro-1)/3 , (miniTabuleiro-1)%3);
-            if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
-                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 2);
+            printf("\tMinitabuleiro: %d %d %d VALOR:%d\t\n",miniTabuleiro,(miniTabuleiro-1)/3 , (miniTabuleiro-1)%3,tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3]);
+            printf("\tposicao: %d %d %d VALOR:%d\t\n",pos,(pos-1)/3 , (pos - 1)%3 ,tabVitorias[(pos-1)/3][(pos-1)%3]);
+            printf("Ola: %d ",tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3]);
+            if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3]){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
+                printf("Depois do random: %d",miniTabuleiro);
                 
             }else{
                 miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
@@ -342,17 +346,13 @@ int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *po
 
 int minitabuleiroAleatorio(int **tabVitorias , int dimensaotabVitorias){
     
-    int posx = 0;
-    int posy = 0;
+    int pos = 0;
 
     do{
-
-        posx = intUniformRnd(1, dimensaotabVitorias);              //Tenho de fazer isto para dar para ser linhas e colunas
-        posy = intUniformRnd(1, dimensaotabVitorias);              //Tenho de fazer isto para dar para ser linhas e colunas
-        printf("%d %d",posx , posy);
-    }while(tabVitorias[posx][posy] != 0);                              //Possivelmente fazer dois ciclos um para o x e outro para o y
+        pos = intUniformRnd(1 , dimensaotabVitorias);
+    }while(tabVitorias[(pos-1)/3][(pos-1)%3] != 0);                              //Possivelmente fazer dois ciclos um para o x e outro para o y
                                                                     //Ou meter duas variaveis que façam aleatoriamente a cena
-    return (posx*posy);
+    return (pos);
 }
 
 void ganharMiniJogo(struct dados *tab , int miniTabuleiro , char caracter){
@@ -410,16 +410,40 @@ int verificarDiagonal(struct dados *tab , int miniTabuleiro){
    return (0);
 }
 
-int verificarVitoria(int *tab , int jogador){
+int verificarVitoria(int **tabVitorias){
 
-    int soma = 0;
-    for(int i = 0 ; i < 9 ; i++){
-        if(tab[i] == jogador)
-            soma += 1;
+    int i = 0, j = 0;
+
+    //Verificar Linhas
+    for(i = 0; i < 3; i++)
+    if(tabVitorias[i][0] != 0){
+        for(j = 0; j < 3-1 && tabVitorias[i][j] == tabVitorias[i][j+1]; j++)
+            ;
+        if(j == 3-1)
+            return (1);
     }
-    if(soma == 3)
+
+    //Verificar Colunas
+    for(i = 0 ; i < 3 ; i++)        
+    if(tabVitorias[0][i] != 0){
+        for(j = 0 ; j < 3-1 && tabVitorias[j][i] == tabVitorias[j+1][i]; j++)
+            ;
+        if(j == 3-1)
+            return (1);
+    }
+
+    //Verificar Diagonal
+     if(tabVitorias[0][0] != 0 &&                
+    tabVitorias[0][0] == tabVitorias[1][1]  && tabVitorias[0][0] == tabVitorias[2][2])         
+        return (1); 
+    
+    if(tabVitorias[0][2] != 0 &&              
+    tabVitorias[0][2] == tabVitorias[1][1] &&         
+    tabVitorias[0][2] == tabVitorias[2][0])           
         return (1);
     
+
+
     return (0);
 }
 

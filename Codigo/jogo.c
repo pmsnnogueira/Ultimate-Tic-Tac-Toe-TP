@@ -67,9 +67,9 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
             insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
-                tabVitorias[miniTabuleiro-1][miniTabuleiro-1] = jogador;
+                tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
                 ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-                if(verificarVitoria(*tabVitorias , jogador) == 1){
+                if(verificarVitoria(tabVitorias) == 1){
                     escreveResultado(jogador);
                     return (1);
                 }
@@ -78,8 +78,13 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
                 //mostraMatriz(tab,9,9);
             }  
 
-            if(tabVitorias[miniTabuleiro-1] != 0)         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
-                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 3);
+            if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3]){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
+                
+            }else{
+                miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
+            }
+
 
             if(jogador == 1){
                 jogador = 2;
@@ -90,7 +95,6 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
                 jogadorCaracter = MARCAX;
             }
             
-            miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
             (*turno)++;
 
             //Agora é o Bot a jogar
@@ -101,11 +105,11 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
         
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1)){
                 //ganhou = jogador;   
-                tabVitorias[miniTabuleiro-1][miniTabuleiro-1] = jogador;
+                tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
                 printf("O computador Ganhou o minitabuleiro!\n");
                 ganharMiniJogo(tab , miniTabuleiro-1 ,'O');
                 
-                if(verificarVitoria(*tabVitorias , jogador) ){
+                if(verificarVitoria(tabVitorias) ){
                     printf("Ganharam o jogo!\n");
                     exit (1);
                 }
@@ -113,15 +117,17 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
                     escreveResultadoMini(jogador , miniTabuleiro-1);
             }  
             
-            if(tabVitorias[miniTabuleiro-1] != 0)
-                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 3);
+            if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3]){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+                miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);                
+            }else{
+                miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
+            }
 
             if(jogador == 1)
                 jogador = 2;
             else
                 jogador = 1;
 
-            miniTabuleiro = posAleatoriaBot;        //Colocar na var Minitabuleiro o proximo mini onde vai ser jogado
             (*turno)++;
         }
         if(opcao == 2){
@@ -176,5 +182,6 @@ int botAleatorio(struct dados *tab ,int minitabuleiro, int dimensaoTabuleiro){
     do{
         aleatorio = intUniformRnd(1, dimensaoTabuleiro);
     }while(tab[minitabuleiro].array[(aleatorio-1) / nLinhas][(aleatorio-1) % nLinhas] != '_');
+    
     return (aleatorio);
 }
