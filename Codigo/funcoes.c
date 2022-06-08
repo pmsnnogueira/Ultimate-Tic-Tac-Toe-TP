@@ -541,7 +541,7 @@ void imprimirListaAoContrario(jogadas *lista , int *count ,int numero){
     imprimirListaAoContrario(lista->prox , count , numero);
 
     (*count)++;
-    if(numero >= *count){           //Apenas vai imprimir as primeiras iterações até atingir o numero pretendido, pq temos de pensar com a recursividade ele vai fazer as coisas ao contrario
+    if(numero >= *count && *count <= 10){           //Apenas vai imprimir as primeiras iterações até atingir o numero pretendido, pq temos de pensar com a recursividade ele vai fazer as coisas ao contrario
         printf("%d",*count);
         printf("\n######JOGADAS######\n");
         printf("# Turno: %d         #\n",lista->turno);
