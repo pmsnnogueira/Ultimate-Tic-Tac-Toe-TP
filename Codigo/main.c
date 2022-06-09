@@ -34,34 +34,35 @@ int main(void){
     tabVitorias = criarTabVitorias(3);
     //MenuInicial
     opcaoMenu = menuInicial();
-    do{
-        switch(opcaoMenu){
-            //Jogar com um amigo
-            case 1:
+    
+    switch(opcaoMenu){
+        //Jogar com um amigo
+        case 1:
 
-                jogarAmigo(matriz,&turno , tabVitorias , lista , &numeroNos);
-                
-                //Guardar a lista ligada num ficheiro de texto
-                guardarFinalJogo(lista);
+            if(jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos) == 0 && (turno == 9*9))
+                printf("\nJogo Empatado\n"); 
+ 
+            //Guardar a lista ligada num ficheiro de texto
+            guardarFinalJogo(lista);
 
-                putchar('\n');
+            putchar('\n');
 
-            break;
+        break;
 
-            //Jogar com o computador
-            case 2:
-                jogarComputador(matriz , &turno , tabVitorias , lista , &numeroNos);
-                //jogarComputador(matriz , &turno , tabVitorias);
-                putchar('\n');
-            break;
-        }
-    }while(turno < 9 * 9);
+        //Jogar com o computador
+        case 2:
+            jogarComputador(matriz , &turno , tabVitorias , lista , &numeroNos);
+            //jogarComputador(matriz , &turno , tabVitorias);
+            putchar('\n');
+        break;
+    }
+        
 
     //Libertar a memoria da matriz
     libertaMatriz(matriz);
     //libertarTabVitorias(tabVitorias);
     
-    free(tabVitorias);// nao sei se está bem
+    //free(tabVitorias);// nao sei se está bem
     //free(&lista);
     return (0);
 }

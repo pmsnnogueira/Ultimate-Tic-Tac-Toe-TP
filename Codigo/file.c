@@ -86,10 +86,10 @@ void guardarFinalJogo(jogadas *lista){
     FILE *fp;
     jogadas *aux = lista;
 
-    printf("Introduza um nome para o ficheiro onde o jogo vai ser guardado: ");
+    printf("Introduza o nome do ficheiro para guardar o jogo: ");
     fgets(nome,sizeof(nome)-1,stdin);
     nome[strlen(nome)-1] = '\0';
-
+    putchar('\n');
     fp = fopen(nome , "wt");
     if(fp == NULL){
         printf("\nErro ao abrir o ficheiro para guardar o jogo!\n");
@@ -97,13 +97,16 @@ void guardarFinalJogo(jogadas *lista){
     }
 
     while(aux != NULL){
-        fprintf(fp , "%d" , lista->turno);
-        fprintf(fp , "%d" , lista->minitabuleiro);
-        fprintf(fp , "%d" , lista->jogador);
-        fprintf(fp , "%d" , lista->posicao);
+        
+        fprintf(fp,"\n######JOGADAS######\n");
+        fprintf(fp , "# Turno: %d         #\n",aux->turno);
+        fprintf(fp , "# Minitabuleiro: %d #\n",aux->minitabuleiro);
+        fprintf(fp , "# Jogador: %d       #\n",aux->jogador);
+        fprintf(fp , "# Posicao: %d       #\n",aux->posicao);
+        fprintf(fp , "####################\n");
+
         aux = aux->prox;
     }
-
     
     fclose(fp);
     return;

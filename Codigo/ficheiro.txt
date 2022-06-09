@@ -1,0 +1,14 @@
+
+######JOGADAS######
+# Turno: 1         #
+# Minitabuleiro: 1 #
+# Jogador: 1       #
+# Posicao: 1       #
+####################
+
+######JOGADAS######
+# Turno: 2         #
+# Minitabuleiro: 1 #
+# Jogador: 2       #
+# Posicao: 3       #
+####################

@@ -162,6 +162,14 @@ int menuInicial(){
     return (0);
 }
 
+void printfAjudas(){
+
+    printf("\n\
+    \t");
+
+    return;
+}
+
 int printMenuInical(){
     
     int opcao;
@@ -189,10 +197,10 @@ int printMenuInical(){
       
         printf("\nEscolha uma opcao entre (1 e 4)");
     }
-
 }
 
-int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas *lista , int *numeroNos){
+int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas **lista , int *numeroNos){
+
     int opcao;
     char string[255];
     int miniTabuleiro;
@@ -214,6 +222,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
         printf("# 1 - Inserir peça          #\n");
         printf("# 2 - Ver Jogadas           #\n");
         printf("# 3 - Pausar jogo           #\n");
+        printf("# 4 - SAIR                  #\n");
         printf("#############################\n");
         printf("Escolha: ");
 
@@ -222,8 +231,8 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
         opcao = atoi(string);
         putchar('\n');   
         
-        if(opcao < 0 && opcao > 3)
-            printf("\nEscolha uma opcao entre (1 e 3)");
+        if(opcao < 0 && opcao > 4)
+            printf("\nEscolha uma opcao entre (1 e 4)");
 
         if(opcao == 1){
             if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
@@ -252,28 +261,24 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
             }   //Se não for o primeiro turno
 
             escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
-            insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
+            insereJogadaFim(lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
                 tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
                 imprimirTabuleiroVitorias(tabVitorias);
                 ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
                 if(verificarVitoria(tabVitorias) == 1){
+                    mostraMatriz(tab);
                     escreveResultado(jogador);
                     return (1);
                 }
                 else
                     escreveResultadoMini(jogador , miniTabuleiro-1);
-                //mostraMatriz(tab,9,9);
             }  
             
-            printf("\tMinitabuleiro: %d %d %d VALOR:%d\t\n",miniTabuleiro,(miniTabuleiro-1)/3 , (miniTabuleiro-1)%3,tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3]);
-            printf("\tposicao: %d %d %d VALOR:%d\t\n",pos,(pos-1)/3 , (pos - 1)%3 ,tabVitorias[(pos-1)/3][(pos-1)%3]);
-            printf("Ola: %d ",tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3]);
             if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3]){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
                 miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
-                printf("Depois do random: %d",miniTabuleiro);
-                
+                 
             }else{
                 miniTabuleiro = pos;      //Avançar o minitabuleiro para a proxima jogada
             }
@@ -297,16 +302,19 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
             opcao = atoi(string);
             putchar('\n');   
 
-            imprimirListaAoContrario(lista , &count,opcao);
+            imprimirListaAoContrario(*lista , &count,opcao);
             count = 0;
         }
         if(opcao == 3){
 
             printf("Guardar o jogo\n");
-            
-            gravarFicheiro(lista , *numeroNos , "fich.bin");
+            gravarFicheiro(*lista , *numeroNos , "fich.bin");
 
             return (3);
+        }
+        if(opcao == 4){
+
+            return(4);
         }
     }
 
