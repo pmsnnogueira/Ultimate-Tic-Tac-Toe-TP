@@ -6,13 +6,10 @@
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
 void libertaMatriz(struct dados* tab){
 
-    int /*i ,*/ l , c , m ;
+    int l , c , m ;
     for(m = 0 ; m < 9 ; m++){
-        for(l = 0 ; l < 3 ; l++){
-            for(c=0; c < 3; c++)
-                //free(tab[m].array[l][c]);
+        for(l = 0 ; l < 3 ; l++)
             free(tab[m].array[l]);
-        }
         free(tab[m].array);
     }
     
@@ -35,22 +32,21 @@ struct dados* criaMatriz(){
         p[i].array = malloc(sizeof(char *) * 3);     //Alocar linhas para cada minitabuleiro
         if(p[i].array == NULL){
             printf("Erro na alocação de memória!\n");
-            
-            for(f = 0 ; f < 9; f++){
-                free(&p[f]);                //Nao sei se está a funcionar
+            for(f = 0 ; f < i; f++){
+                free(p);                                        //Ver este Free se está bem
             }
-            free(p);
             exit (EXIT_FAILURE);
         }
         for(a = 0 ; a < 3 ; a++){
             p[i].array[a] = malloc(sizeof(char *) *3);  //Alocar Colunas para cada minitabuleiro
             if(p[i].array[a] == NULL){
                 printf("Erro na alocação de memoria!\n");
-            
-                for(f = 0 ; f < 3 ; f++)
-                    free(p[f].array[f]);
-                for(f = 3 ; f < 9 ; f++)
-                    free(&p[f]);
+
+                for(int m = 0 ; m < 9 ; m++){
+                    for(int l = 0 ; l < 3 ; l++)
+                        free(p[m].array[l]);                        //Ver este Free se está bem
+                    free(p[m].array);
+                }
                 free(p);
 
                 exit (EXIT_FAILURE);
@@ -95,10 +91,10 @@ int **criarTabVitorias(int dimensao){
     return (tab);
 }
 
-void libertarTabVitorias(int *tabVitorias , int dimensao){
+/*void libertarTabVitorias(int *tabVitorias , int dimensao){
     for(int i = 0 ; i < dimensao ; i++)
         free(tabVitorias);
-}
+}*/
 
 void mostraMatriz(struct dados *tab){
 
@@ -479,11 +475,13 @@ void insereJogadaFim(struct jogadas **lista , int *numeroNos, int miniTabuleiro 
         (*lista)->posicao = posicao;
         (*lista)->turno = turno;
         (*lista)->prox = NULL;
+        printf("Aqui");
 
     }else{
         while(aux->prox != NULL){
             aux = aux->prox;
         }
+        //printf("fsafsaf");
         aux->prox = (jogadas*)malloc(sizeof(lista));
         if(aux->prox == NULL){
             //freeLista(lista);                 //Corrigir esta funcao 
@@ -570,3 +568,8 @@ void imprimirTabuleiroVitorias(int **tabVitorias){
         putchar('\n');
     }
 }
+
+
+
+
+

@@ -3,7 +3,7 @@
 #include "funcoes.h"
 #include "file.h"
 
-int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas *lista, int *numeroNos){
+int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas **lista, int *numeroNos){
 
     int opcao;
     char string[255];
@@ -64,7 +64,7 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
                 }
             }
             escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
-            insereJogadaFim(&lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
+            insereJogadaFim(lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
                 tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
@@ -101,17 +101,16 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
             posAleatoriaBot = botAleatorio(tab , miniTabuleiro-1 , 9);        //PosAleatoria para o bot jogar
 
             tab[miniTabuleiro-1].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
-            insereJogadaFim(&lista , numeroNos , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
+            insereJogadaFim(lista , numeroNos , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
         
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1)){
                 //ganhou = jogador;   
                 tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
                 printf("O computador Ganhou o minitabuleiro!\n");
                 ganharMiniJogo(tab , miniTabuleiro-1 ,'O');
-                
                 if(verificarVitoria(tabVitorias) ){
                     printf("Ganharam o jogo!\n");
-                    exit (1);
+                    return (1);
                 }
                 else
                     escreveResultadoMini(jogador , miniTabuleiro-1);
@@ -132,13 +131,13 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
         }
         if(opcao == 2){
             printf("\nImprimir Lista\n");
-            imprimirListaAoContrario(lista , &count,5);
+            imprimirListaAoContrario(*lista , &count,5);
             count = 0;
         }
         if(opcao == 3){
 
             printf("Guardar o jogo\n");
-            gravarFicheiro(lista , *numeroNos , "fich.bin");
+            gravarFicheiro(*lista , *numeroNos , "fich.bin");
             return (3);
         }   
     }

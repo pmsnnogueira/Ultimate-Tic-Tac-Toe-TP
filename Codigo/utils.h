@@ -9,7 +9,7 @@
 #define MARCAO 'O'
 
 typedef struct dados{
-    int nTab;
+   // int nTab;
     char **array;
     
 }dados;

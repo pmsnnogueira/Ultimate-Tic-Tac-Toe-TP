@@ -3,7 +3,7 @@
 
     int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome);
 
-    void lerFicheiro(char *nome);
+    jogadas* lerFicheiro(char *nome);
 
     void guardarFinalJogo(jogadas *lista);
 

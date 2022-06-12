@@ -23,39 +23,82 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
         fwrite(&aux->minitabuleiro , sizeof(int) , 1 , fp);                 //Vou ter de usar este acho eu, 
         fwrite(&aux->jogador , sizeof(int) , 1 , fp);                       //Na aula o stor pedeiu para estudarmos o exemplo da lista duplamente ligada
         fwrite(&aux->posicao , sizeof(int) , 1 , fp);
-        fwrite(&aux->prox , sizeof(int) , 1 , fp);
+        //fwrite(&aux->prox , sizeof(int) , 1 , fp);
         
         aux = aux->prox;
     }
 
     printf("Jogo guardado com sucesso com %d jogadas\n",numeroJogadas);
     fclose(fp);
-    lerFicheiro(nome);
+    aux = lerFicheiro(nome);
     
     return (0);
 }
 
-void lerFicheiro(char *nome){
+jogadas* lerFicheiro(char *nome){
 
     FILE *fp;
-    jogadas tmp;
-    int numeroJogadas = 0;
+
+    jogadas *lista = NULL;
     
+    int numeroJogadas = 0;
+    int i = 0;
+    int turno , minitabuleiro , jogador , posicao;
     fp = fopen(nome , "rb");
     if(fp == NULL){
 
         printf("Erro ao abrir o ficheiro\n");
-        return;
+        return NULL;
     }
+    
 
     fread(&numeroJogadas , sizeof(int) , 1 , fp);
-    
-    fread(&tmp.turno , sizeof(int) , 1 , fp);
-    fread(&tmp.minitabuleiro , sizeof(int) , 1 , fp);
-    fread(&tmp.jogador , sizeof(int) , 1 , fp);
-    fread(&tmp.posicao , sizeof(int) , 1 , fp);
-    //fread(&tmp , sizeof(jogadas) , numeroJogadas , fp);
+    while(i < numeroJogadas){
+        fread(&turno , sizeof(int) , 1 , fp);
+        fread(&minitabuleiro , sizeof(int) , 1 , fp);
+        fread(&jogador , sizeof(int) , 1 , fp);
+        fread(&posicao , sizeof(int) , 1 , fp);
+        
 
+
+        //limpar a lista
+        if(lista == NULL){
+            lista = (jogadas*)malloc(sizeof(lista)); 
+            if(lista == NULL){
+                printf("Erro a alocar memoria para a lista ligada\n");
+                return (NULL);
+            }
+            lista->jogador = jogador;
+            lista->minitabuleiro = minitabuleiro;
+            lista->posicao = posicao;
+            lista->turno = turno;
+            lista->prox = NULL;
+            printf("Aqui");
+
+        }else{
+            while(lista->prox != NULL){
+                lista = lista->prox;
+            }
+            //printf("fsafsaf");
+            lista->prox = (jogadas*)malloc(sizeof(lista));
+            if(lista->prox == NULL){
+                //freeLista(lista);                 //Corrigir esta funcao 
+                //Fazer o apagar a lista apagarLista(*lista);
+                printf("Erro a alocar memoria para a lista ligada\n");
+                return(NULL);
+            }
+            lista->prox->jogador = jogador;
+            lista->prox->minitabuleiro = minitabuleiro;
+            lista->prox->posicao = posicao;
+            lista->prox->turno = turno;
+            lista->prox->prox = NULL;        
+        }
+       // printf("%d %d %d %d\n",lista->turno, lista->minitabuleiro , lista->jogador , lista->posicao);
+        //lista = lista->prox;
+
+       i++;
+    }
+    imprimirLista(lista);
     printf("Numero jogadas a ler: %d\n",numeroJogadas);
     printf("\nA ler a lista...\n");
     //imprimirLista(&tmp);
@@ -65,8 +108,8 @@ void lerFicheiro(char *nome){
     fclose(fp);
     printf("Aqui");
     
-    //return (lista);
-    return;
+    return (lista);
+    //return;
 }
 
 /*void insr(jogadas **lista){
@@ -79,7 +122,6 @@ void lerFicheiro(char *nome){
 
 
 //Guardar jogo em Ficheiro de texto
-
 void guardarFinalJogo(jogadas *lista){
 
     char nome[100];

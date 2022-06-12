@@ -8,13 +8,38 @@
 #define COLUNAS 3
 #define DIMENSAOTABULEIRO 9
 
+void libertarTabVitorias(int **tabVitorias){
+
+    for(int i = 0 ; i < 3 ; i++){
+        free(tabVitorias[i]);    
+    }
+
+    free(tabVitorias);
+    return;
+}
+
+void libertaLista(struct jogadas *lista){
+
+    jogadas* aux;
+    while(lista != NULL){
+        aux = lista;
+        lista = lista->prox;
+        free(aux);
+    }
+
+    return;
+}
 
 
 int main(void){
 
     int opcaoMenu;
-    struct dados *matriz;
+
+    struct dados *matriz;       //É o meu array de estruturas 
+
+
     int turno = 1;
+    
     int **tabVitorias = NULL;
 
     //Lista Ligada
@@ -43,7 +68,7 @@ int main(void){
                 printf("\nJogo Empatado\n"); 
  
             //Guardar a lista ligada num ficheiro de texto
-            guardarFinalJogo(lista);
+            //guardarFinalJogo(lista);
 
             putchar('\n');
 
@@ -51,18 +76,29 @@ int main(void){
 
         //Jogar com o computador
         case 2:
-            jogarComputador(matriz , &turno , tabVitorias , lista , &numeroNos);
+            jogarComputador(matriz , &turno , tabVitorias , &lista , &numeroNos);
             //jogarComputador(matriz , &turno , tabVitorias);
             putchar('\n');
         break;
     }
-        
+
+
+    /*int m , l ,c;
+      for(m = 0 ; m < 9 ; m++){
+        for(l = 0 ; l < 3 ; l++){
+            for(c = 0; c < 3; c++)
+                free(matriz[m].array[l][c]);
+            free(matriz[m].array[l]);
+        }
+        free(matriz[m].array);
+    }
+    free(matriz);*/  
 
     //Libertar a memoria da matriz
     libertaMatriz(matriz);
-    //libertarTabVitorias(tabVitorias);
-    
-    //free(tabVitorias);// nao sei se está bem
-    //free(&lista);
+    libertarTabVitorias(tabVitorias);
+    libertaLista(lista);
+
+
     return (0);
 }
