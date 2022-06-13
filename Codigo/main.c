@@ -52,6 +52,12 @@ int main(void){
 
         //Jogar com o computador
         case 2:
+
+            if(verificarExistenciaFich("fich.bin") == 1){
+                //Se quiser utilizar o ficheiro que já foi criado
+                flagRecomecar = 1;
+            }
+
             if(jogarComputador(matriz , &turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno > 9*9))
                 printf("\nJogo Empatado\n"); 
 

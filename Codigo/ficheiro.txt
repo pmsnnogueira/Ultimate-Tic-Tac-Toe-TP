@@ -3,12 +3,33 @@
 # Turno: 1         #
 # Minitabuleiro: 1 #
 # Jogador: 1       #
-# Posicao: 1       #
+# Posicao: 3       #
 ####################
 
 ######JOGADAS######
 # Turno: 2         #
-# Minitabuleiro: 1 #
+# Minitabuleiro: 3 #
 # Jogador: 2       #
-# Posicao: 3       #
+# Posicao: 1       #
+####################
+
+######JOGADAS######
+# Turno: 3         #
+# Minitabuleiro: 1 #
+# Jogador: 1       #
+# Posicao: 2       #
+####################
+
+######JOGADAS######
+# Turno: 4         #
+# Minitabuleiro: 2 #
+# Jogador: 2       #
+# Posicao: 1       #
+####################
+
+######JOGADAS######
+# Turno: 5         #
+# Minitabuleiro: 1 #
+# Jogador: 1       #
+# Posicao: 1       #
 ####################

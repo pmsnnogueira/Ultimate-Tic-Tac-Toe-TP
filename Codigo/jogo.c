@@ -19,12 +19,13 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
 
     if(*flagRecuperar == 1){
         //Recuperar o Jogo
-        *lista = lerFicheiro(FICHBINARIO, tab , turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
-       // imprimirLista(*lista);
+        *lista = lerFicheiro(FICHBINARIO, tab ,turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
+        imprimirLista(*lista);
         //mostraMatriz(tab);
         
         //printf("\n%d %d %d\n",*turno , miniTabuleiro , jogador);
 
+       // mostraTabuleiroJogo(tab);
         if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3])       //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
             miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
         else
@@ -34,6 +35,8 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
             jogador = 2;
         else
             jogador = 1;
+
+        //imprimirLista(*lista);
     }
     while(*turno < 9 * 9){
         if(*turno != 1){
@@ -195,7 +198,7 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
     //int ganhou;
     if(*flagRecuperar == 1){
         //Recuperar o Jogo
-        *lista = lerFicheiro(FICHBINARIO , tab , turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
+        *lista = lerFicheiro(FICHBINARIO , tab ,turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
 
         if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3])       //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
             miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);

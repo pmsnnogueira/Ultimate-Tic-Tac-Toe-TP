@@ -26,7 +26,7 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
         fwrite(&aux->jogador , sizeof(int) , 1 , fp);                       //Na aula o stor pedeiu para estudarmos o exemplo da lista duplamente ligada
         fwrite(&aux->posicao , sizeof(int) , 1 , fp);
 
-        printf("A guardar: %d %d %d %d\n",aux->turno , aux->minitabuleiro , aux->jogador , aux->posicao);
+       // printf("A guardar: %d %d %d %d\n",aux->turno , aux->minitabuleiro , aux->jogador , aux->posicao);
         aux = aux->prox;
     }
 
@@ -37,10 +37,11 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
 }
 
 //Ler o ficheiro binario e reconstruir toda a lista, tabuleiro e tabVitoria
-jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVitorias , int *numeroJogadas , int *miniTabuleiro , int *jogador , int *posicao){
+jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitorias , int *numeroJogadas , int *miniTabuleiro , int *jogador , int *posicao){
 
     FILE *fp;
     jogadas *lista = NULL;
+    jogadas *aux = lista;
     char jogadorCaracter;
     
     int i = 0;
@@ -54,14 +55,16 @@ jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVito
     printf("\nA ler o jogo guardado em '%s'\n",nome);
 
     fread(numeroJogadas , sizeof(int) , 1 , fp);
-    for(i = 0 ; i <= *numeroJogadas ; i++){
+   // printf("%d" , numeroJogadas);
+    for(i = 0 ; i < *numeroJogadas ;){
         fread(turno , sizeof(int) , 1 , fp);
         fread(miniTabuleiro , sizeof(int) , 1 , fp);
         fread(jogador , sizeof(int) , 1 , fp);
         fread(posicao , sizeof(int) , 1 , fp);
         
         //Adicionar o no na nova esttrutura
-        if(lista == NULL){
+        insereJogadaFim(&lista , &i , *miniTabuleiro , *jogador , *posicao , *turno);
+        /*if(lista == NULL){
             lista = (jogadas*)malloc(sizeof(lista)); 
             if(lista == NULL){
                 printf("Erro a alocar memoria para a lista ligada\n");
@@ -74,42 +77,56 @@ jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVito
             lista->prox = NULL;
            
         }else{
-            while(lista->prox != NULL){
-                lista = lista->prox;
+            while(aux.prox != NULL){
+                aux = aux.prox;
             }
-            lista->prox = (jogadas*)malloc(sizeof(lista));
-            if(lista->prox == NULL){
+            aux->prox = (jogadas*)malloc(sizeof(lista));
+            if(aux->prox == NULL){
                 //freeLista(lista);                 //Corrigir esta funcao 
                 //Fazer o apagar a lista apagarLista(*lista);
                 printf("Erro a alocar memoria para a lista ligada\n");
                 return(NULL);
             }
-            lista->prox->jogador = *jogador;
-            lista->prox->minitabuleiro = *miniTabuleiro;
-            lista->prox->posicao = *posicao;
-            lista->prox->turno = *turno;
-            lista->prox->prox = NULL;        
-        }
-
+            aux->prox->jogador = *jogador;
+            aux->prox->minitabuleiro = *miniTabuleiro;
+            aux->prox->posicao = *posicao;
+            aux->prox->turno = *turno;
+            aux->prox->prox = NULL;        
+        }*/
+       // printf("Turno: %d\n" , lista->turno);
         //printf("\nA ler: %d %d %d %d\n", lista->turno , lista->jogador , lista->minitabuleiro , lista->posicao);
         //Reconstruir aqui o tabuliro
-        if(lista->jogador == 1){
-            jogadorCaracter = MARCAX;
-            tab[lista->minitabuleiro-1].array[(lista->posicao-1) / 3][(lista->posicao-1) % 3] = 'X';
-        }else if(lista->jogador == 2){
-            jogadorCaracter = MARCAO;
-            tab[lista->minitabuleiro-1].array[(lista->posicao-1) / 3][(lista->posicao-1) % 3] = 'O';
-        }
-
-        if(verificarLinha(tab , lista->minitabuleiro-1) || verificarColuna(tab , lista->minitabuleiro-1) || verificarDiagonal(tab , lista->minitabuleiro-1) ){
-            tabVitorias[(lista->minitabuleiro-1) / 3][(lista->minitabuleiro-1) % 3] = lista->jogador;
-            ganharMiniJogo(tab , lista->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-        }   
+        
 
     }
+
+    aux = lista;
+    while(aux != NULL){
+        if(aux->jogador == 1){
+            jogadorCaracter = MARCAX;
+            tab[aux->minitabuleiro-1].array[(aux->posicao-1) / 3][(aux->posicao-1) % 3] = 'X';
+        }else if(aux->jogador == 2){
+            jogadorCaracter = MARCAO;
+            tab[aux->minitabuleiro-1].array[(aux->posicao-1) / 3][(aux->posicao-1) % 3] = 'O';
+        }
+
+        if(verificarLinha(tab , aux->minitabuleiro-1) || verificarColuna(tab , aux->minitabuleiro-1) || verificarDiagonal(tab , aux->minitabuleiro-1) ){
+            tabVitorias[(aux->minitabuleiro-1) / 3][(aux->minitabuleiro-1) % 3] = aux->jogador;
+            ganharMiniJogo(tab , aux->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
+        }   
+        aux = aux->prox;
+    }
+
+    
+   // imprimirLista(lista);
+    putchar('\n');
+    putchar('\n');
+    putchar('\n');
+    (*turno)++; //preparar o proximo turno
     printf("Numero jogadas lidas: %d\n",*numeroJogadas);
-   
     fclose(fp); 
+
+    //imprimirLista(lista);
     return (lista);
 }
 

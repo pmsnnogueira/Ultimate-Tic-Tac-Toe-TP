@@ -121,10 +121,7 @@ int menuInicial(){
     if(opcaoMenu == 1 || opcaoMenu == 2)
         return opcaoMenu;
 
-    if(opcaoMenu == 3)
-        menuInicial(); //Por enquanto fica assim
-
-    if(opcaoMenu == 4){
+    if(opcaoMenu == 3){
         printf("\nSAIR DO JOGO...\n");
         exit(0);
     }
@@ -143,8 +140,7 @@ int printMenuInical(){
         printf("\n############ Menu ############\n");
         printf("# 1 - Jogar com amigo        #\n");
         printf("# 2 - Jogar com o computador #\n");
-        printf("# 3 - Ajudas                 #\n");
-        printf("# 4 - Sair                   #\n");
+        printf("# 3 - Sair                   #\n");
         printf("##############################\n");
         printf("Escolha: ");
     
@@ -159,14 +155,6 @@ int printMenuInical(){
       
         printf("\nEscolha uma opcao entre (1 e 4)");
     }
-}
-
-void printfMenuAjudas(){
-
-    printf("\n\
-    \t");
-
-    return;
 }
 
 //Gerar uma posicao para um minitabuleiro aleatorio
@@ -304,7 +292,6 @@ void insereJogadaFim(struct jogadas **lista , int *numeroNos, int miniTabuleiro 
         while(aux->prox != NULL){
             aux = aux->prox;
         }
-        //printf("fsafsaf");
         aux->prox = (jogadas*)malloc(sizeof(lista));
         if(aux->prox == NULL){
             //freeLista(lista);                 //Corrigir esta funcao 
@@ -351,7 +338,6 @@ void imprimirListaAoContrario(jogadas *lista , int *count ,int numero){
 
     (*count)++;
     if(numero >= *count && *count <= 10){           //Apenas vai imprimir as primeiras iterações até atingir o numero pretendido, pq temos de pensar com a recursividade ele vai fazer as coisas ao contrario
-        printf("%d",*count);
         printf("\n######JOGADAS######\n");
         printf("# Turno: %d         #\n",lista->turno);
         printf("# Minitabuleiro: %d #\n",lista->minitabuleiro);
