@@ -6,7 +6,7 @@
 // Liberta uma matriz dinâmica de caracteres com nLin linhas
 void libertaMatriz(struct dados* tab){
 
-    int l , c , m ;
+    int l , m ;
     for(m = 0 ; m < 9 ; m++){
         for(l = 0 ; l < 3 ; l++)
             free(tab[m].array[l]);
@@ -21,7 +21,7 @@ void libertaMatriz(struct dados* tab){
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz(){
     struct dados *p = NULL;
-    int i, a , f;
+    int i, a , f , l , k;
 
     p = malloc(sizeof(dados) * 9);
     if(p == NULL)
@@ -42,10 +42,10 @@ struct dados* criaMatriz(){
             if(p[i].array[a] == NULL){
                 printf("Erro na alocação de memoria!\n");
 
-                for(int m = 0 ; m < 9 ; m++){
-                    for(int l = 0 ; l < 3 ; l++)
-                        free(p[m].array[l]);                        //Ver este Free se está bem
-                    free(p[m].array);
+                for(f = 0 ; f < 9 ; f++){
+                    for(l = 0 ; l < 3 ; l++)
+                        free(p[f].array[l]);                        //Ver este Free se está bem
+                    free(p[f].array);
                 }
                 free(p);
 
@@ -55,7 +55,7 @@ struct dados* criaMatriz(){
     }
 
     for(i=0; i<9; i++){    
-         for(int k = 0 ; k < 3 ; k++){
+         for(k = 0 ; k < 3 ; k++){
             for(a = 0 ; a < 3 ; a++){
                 p[i].array[k][a] = '_';
             }
@@ -195,7 +195,7 @@ int printMenuInical(){
     }
 }
 
-int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas **lista , int *numeroNos){
+int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas **lista , int *numeroNos , int *flagRecuperar){
 
     int opcao;
     char string[255];
@@ -207,6 +207,13 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
     int jogador = 1;
     char jogadorCaracter = MARCAX;
 
+    if(*flagRecuperar == 1){
+        //Recuperar o Jogo
+        *lista = lerFicheiro("fich.bin" , tab , turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
+       // imprimirLista(*lista);
+        mostraMatriz(tab);
+        *flagRecuperar = 0;
+    }
     while(*turno < 9 * 9){
         if(*turno != 1){
                 mostraMatriz(tab);
@@ -217,8 +224,8 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
         printf("\n###### Jogar com Amigo ######\n");
         printf("# 1 - Inserir peça          #\n");
         printf("# 2 - Ver Jogadas           #\n");
-        printf("# 3 - Pausar jogo           #\n");
-        printf("# 4 - SAIR                  #\n");
+        printf("# 3 - Salvar jogo e SAIR    #\n");
+        printf("# 4 - SAIR sem salvar       #\n");
         printf("#############################\n");
         printf("Escolha: ");
 

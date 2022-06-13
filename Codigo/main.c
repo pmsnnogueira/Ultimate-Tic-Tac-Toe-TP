@@ -30,6 +30,34 @@ void libertaLista(struct jogadas *lista){
     return;
 }
 
+int verificarExistenciaFich(char *nome){
+    FILE *fp;
+    char string[100];        
+    fp = fopen(nome,"rb");
+    if(fp == NULL)
+        return (0);
+
+    //Se existir
+    fclose(fp);
+
+    do{
+        printf("Deseja retomar o jogo anterior? (s = sim , n = nao): ");
+        fgets(string,sizeof(string)-1,stdin);
+        string[strlen(string)-1] = '\0';
+        putchar('\n'); 
+
+        if(string[0] == 's'){
+            return(1);
+        }
+
+        if(string[0] == 'n'){
+            printf("nao");
+            return(0);
+        
+        }
+
+    }while(1);
+}
 
 int main(void){
 
@@ -45,6 +73,7 @@ int main(void){
     //Lista Ligada
     jogadas *lista = NULL;
     int numeroNos = 0;
+    int flagRecomecar = 0;     //Flag para recomeçar o jogo
     apagarEcra();
     //Inicializar o initRandom()
     initRandom();
@@ -63,9 +92,16 @@ int main(void){
     switch(opcaoMenu){
         //Jogar com um amigo
         case 1:
-
-            if(jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos) == 0 && (turno == 9*9))
+            if(verificarExistenciaFich("fich.bin") == 1){
+                //Se quiser utilizar o ficheiro que já foi criado
+                flagRecomecar = 1;
+            }
+                //Vou ter de passar isto para dentro da funcao jogar Amigo vai ser mais facil para reconstruir tudo
+                
+                //Se nao quiser correr isto
+            if(jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno == 9*9))
                 printf("\nJogo Empatado\n"); 
+
  
             //Guardar a lista ligada num ficheiro de texto
             //guardarFinalJogo(lista);
