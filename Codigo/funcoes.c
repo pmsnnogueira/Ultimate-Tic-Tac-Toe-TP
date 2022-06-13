@@ -211,8 +211,19 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
         //Recuperar o Jogo
         *lista = lerFicheiro("fich.bin" , tab , turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
        // imprimirLista(*lista);
-        mostraMatriz(tab);
-        *flagRecuperar = 0;
+        //mostraMatriz(tab);
+        
+        //printf("\n%d %d %d\n",*turno , miniTabuleiro , jogador);
+
+        if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3])       //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
+            miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);
+        else
+            miniTabuleiro = pos;
+            
+        if(jogador == 1)
+            jogador = 2;
+        else
+            jogador = 1;
     }
     while(*turno < 9 * 9){
         if(*turno != 1){
@@ -238,7 +249,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
             printf("\nEscolha uma opcao entre (1 e 4)");
 
         if(opcao == 1){
-            if(*turno == 1){ //Se for o primeiro turno apresentar algumas dicas inciais
+            if(*turno == 1 && *flagRecuperar == 0){ //Se for o primeiro turno apresentar algumas dicas inciais
                 while(1){
                     printf("\
                     *-----*-----*-----*\n\
@@ -296,6 +307,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
             }
            
             (*turno)++;
+            *flagRecuperar = 0;
         }
         if(opcao == 2){
             printf("\nImprimir Lista\n");
@@ -482,8 +494,6 @@ void insereJogadaFim(struct jogadas **lista , int *numeroNos, int miniTabuleiro 
         (*lista)->posicao = posicao;
         (*lista)->turno = turno;
         (*lista)->prox = NULL;
-        printf("Aqui");
-
     }else{
         while(aux->prox != NULL){
             aux = aux->prox;

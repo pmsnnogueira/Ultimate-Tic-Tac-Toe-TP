@@ -46,15 +46,11 @@ int verificarExistenciaFich(char *nome){
         string[strlen(string)-1] = '\0';
         putchar('\n'); 
 
-        if(string[0] == 's'){
+        if(string[0] == 's')
             return(1);
-        }
 
-        if(string[0] == 'n'){
-            printf("nao");
+        if(string[0] == 'n')
             return(0);
-        
-        }
 
     }while(1);
 }

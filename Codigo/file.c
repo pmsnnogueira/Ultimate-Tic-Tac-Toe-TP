@@ -25,6 +25,8 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
         fwrite(&aux->minitabuleiro , sizeof(int) , 1 , fp);                 //Vou ter de usar este acho eu, 
         fwrite(&aux->jogador , sizeof(int) , 1 , fp);                       //Na aula o stor pedeiu para estudarmos o exemplo da lista duplamente ligada
         fwrite(&aux->posicao , sizeof(int) , 1 , fp);
+
+        printf("A guardar: %d %d %d %d\n",aux->turno , aux->minitabuleiro , aux->jogador , aux->posicao);
         aux = aux->prox;
     }
 
@@ -38,8 +40,8 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
 jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVitorias , int *numeroJogadas , int *miniTabuleiro , int *jogador , int *posicao){
 
     FILE *fp;
-
     jogadas *lista = NULL;
+    char jogadorCaracter;
     
     int i = 0;
     fp = fopen(nome , "rb");
@@ -53,7 +55,7 @@ jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVito
 
     fread(numeroJogadas , sizeof(int) , 1 , fp);
     printf("Numero jogadas a ler: %d\n",*numeroJogadas);
-    for(i = 0 ; i < *numeroJogadas ; i++){
+    for(i = 0 ; i <= *numeroJogadas ; i++){
         fread(turno , sizeof(int) , 1 , fp);
         fread(miniTabuleiro , sizeof(int) , 1 , fp);
         fread(jogador , sizeof(int) , 1 , fp);
@@ -90,15 +92,23 @@ jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVito
             lista->prox->prox = NULL;        
         }
 
-        //printf("%d %d %d %d", lista->jogador , lista->minitabuleiro , lista->posicao , lista->turno);
+        printf("\nA ler: %d %d %d %d\n", lista->turno , lista->jogador , lista->minitabuleiro , lista->posicao);
         //Reconstruir aqui o tabuliro
-        if(lista->jogador == 1)
+        if(lista->jogador == 1){
+            jogadorCaracter = 'X';
             tab[lista->minitabuleiro-1].array[(lista->posicao-1) / 3][(lista->posicao-1) % 3] = 'X';
-        if(lista->jogador == 2)
+        }else if(lista->jogador == 2){
+            jogadorCaracter = 'O';
             tab[lista->minitabuleiro-1].array[(lista->posicao-1) / 3][(lista->posicao-1) % 3] = 'O';
+        }
 
-        if(verificarLinha(tab , lista->minitabuleiro-1) || verificarColuna(tab , lista->minitabuleiro-1) || verificarDiagonal(tab , lista->minitabuleiro-1) )
+        if(verificarLinha(tab , lista->minitabuleiro-1) || verificarColuna(tab , lista->minitabuleiro-1) || verificarDiagonal(tab , lista->minitabuleiro-1) ){
             tabVitorias[(lista->minitabuleiro-1) / 3][(lista->minitabuleiro-1) % 3] = lista->jogador;
+            ganharMiniJogo(tab , lista->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
+        }
+
+       
+            
 
     }
    
