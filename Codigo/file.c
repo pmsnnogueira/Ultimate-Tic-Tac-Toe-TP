@@ -51,10 +51,9 @@ jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVito
         return NULL;
     }
 
-    printf("\nA ler o jogo guardado em '%s'...\n",nome);
+    printf("\nA ler o jogo guardado em '%s'\n",nome);
 
     fread(numeroJogadas , sizeof(int) , 1 , fp);
-    printf("Numero jogadas a ler: %d\n",*numeroJogadas);
     for(i = 0 ; i <= *numeroJogadas ; i++){
         fread(turno , sizeof(int) , 1 , fp);
         fread(miniTabuleiro , sizeof(int) , 1 , fp);
@@ -92,25 +91,23 @@ jogadas* lerFicheiro(char *nome , struct dados *tab , int *turno , int **tabVito
             lista->prox->prox = NULL;        
         }
 
-        printf("\nA ler: %d %d %d %d\n", lista->turno , lista->jogador , lista->minitabuleiro , lista->posicao);
+        //printf("\nA ler: %d %d %d %d\n", lista->turno , lista->jogador , lista->minitabuleiro , lista->posicao);
         //Reconstruir aqui o tabuliro
         if(lista->jogador == 1){
-            jogadorCaracter = 'X';
+            jogadorCaracter = MARCAX;
             tab[lista->minitabuleiro-1].array[(lista->posicao-1) / 3][(lista->posicao-1) % 3] = 'X';
         }else if(lista->jogador == 2){
-            jogadorCaracter = 'O';
+            jogadorCaracter = MARCAO;
             tab[lista->minitabuleiro-1].array[(lista->posicao-1) / 3][(lista->posicao-1) % 3] = 'O';
         }
 
         if(verificarLinha(tab , lista->minitabuleiro-1) || verificarColuna(tab , lista->minitabuleiro-1) || verificarDiagonal(tab , lista->minitabuleiro-1) ){
             tabVitorias[(lista->minitabuleiro-1) / 3][(lista->minitabuleiro-1) % 3] = lista->jogador;
             ganharMiniJogo(tab , lista->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-        }
-
-       
-            
+        }   
 
     }
+    printf("Numero jogadas lidas: %d\n",*numeroJogadas);
    
     fclose(fp); 
     return (lista);
@@ -122,6 +119,9 @@ void guardarFinalJogo(jogadas *lista){
     char nome[100];
     FILE *fp;
     jogadas *aux = lista;
+
+    if(aux == NULL)
+        return;
 
     printf("Introduza o nome do ficheiro para guardar o jogo: ");
     fgets(nome,sizeof(nome)-1,stdin);

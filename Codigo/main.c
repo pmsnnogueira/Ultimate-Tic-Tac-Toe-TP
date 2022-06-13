@@ -3,74 +3,19 @@
 #include "jogo.h"
 #include "file.h"
 
-//Variaveis Globais
-#define LINHAS 3
-#define COLUNAS 3
-#define DIMENSAOTABULEIRO 9
-
-void libertarTabVitorias(int **tabVitorias){
-
-    for(int i = 0 ; i < 3 ; i++){
-        free(tabVitorias[i]);    
-    }
-
-    free(tabVitorias);
-    return;
-}
-
-void libertaLista(struct jogadas *lista){
-
-    jogadas* aux;
-    while(lista != NULL){
-        aux = lista;
-        lista = lista->prox;
-        free(aux);
-    }
-
-    return;
-}
-
-int verificarExistenciaFich(char *nome){
-    FILE *fp;
-    char string[100];        
-    fp = fopen(nome,"rb");
-    if(fp == NULL)
-        return (0);
-
-    //Se existir
-    fclose(fp);
-
-    do{
-        printf("Deseja retomar o jogo anterior? (s = sim , n = nao): ");
-        fgets(string,sizeof(string)-1,stdin);
-        string[strlen(string)-1] = '\0';
-        putchar('\n'); 
-
-        if(string[0] == 's')
-            return(1);
-
-        if(string[0] == 'n')
-            return(0);
-
-    }while(1);
-}
-
 int main(void){
 
-    int opcaoMenu;
-
+    int opcaoMenu;              //Opcao Menu
     struct dados *matriz;       //É o meu array de estruturas 
-
-
-    int turno = 1;
-    
-    int **tabVitorias = NULL;
-
+    int turno = 1;              //Turnos do jogo
+    int **tabVitorias = NULL;   //Tabuleiro dinamico de vitorias 3x3
     //Lista Ligada
-    jogadas *lista = NULL;
-    int numeroNos = 0;
-    int flagRecomecar = 0;     //Flag para recomeçar o jogo
-    apagarEcra();
+    jogadas *lista = NULL;      //Lista ligada
+    int numeroNos = 0;          //Numero de nos na minha lista ligada
+    int flagRecomecar = 0;      //Flag para recomeçar o jogo
+    
+    apagarEcra();  
+
     //Inicializar o initRandom()
     initRandom();
 
@@ -81,10 +26,11 @@ int main(void){
         return (1);
     }
 
-    tabVitorias = criarTabVitorias(3);
+    //Criar tabVitorias 3*3 Dinamicamente
+    tabVitorias = criarTabVitorias(TAMTABVITORIAS);
+
     //MenuInicial
     opcaoMenu = menuInicial();
-    
     switch(opcaoMenu){
         //Jogar com um amigo
         case 1:
@@ -95,38 +41,25 @@ int main(void){
                 //Vou ter de passar isto para dentro da funcao jogar Amigo vai ser mais facil para reconstruir tudo
                 
                 //Se nao quiser correr isto
-            if(jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno == 9*9))
+            if(jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno > 9*9))
                 printf("\nJogo Empatado\n"); 
 
  
             //Guardar a lista ligada num ficheiro de texto
-            //guardarFinalJogo(lista);
-
+            guardarFinalJogo(lista);
             putchar('\n');
-
         break;
 
         //Jogar com o computador
         case 2:
-            jogarComputador(matriz , &turno , tabVitorias , &lista , &numeroNos);
-            //jogarComputador(matriz , &turno , tabVitorias);
+            if(jogarComputador(matriz , &turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno > 9*9))
+                printf("\nJogo Empatado\n"); 
+
+            guardarFinalJogo(lista);
             putchar('\n');
         break;
     }
-
-
-    /*int m , l ,c;
-      for(m = 0 ; m < 9 ; m++){
-        for(l = 0 ; l < 3 ; l++){
-            for(c = 0; c < 3; c++)
-                free(matriz[m].array[l][c]);
-            free(matriz[m].array[l]);
-        }
-        free(matriz[m].array);
-    }
-    free(matriz);*/  
-
-    //Libertar a memoria da matriz
+    //Libertar memoria
     libertaMatriz(matriz);
     libertarTabVitorias(tabVitorias);
     libertaLista(lista);

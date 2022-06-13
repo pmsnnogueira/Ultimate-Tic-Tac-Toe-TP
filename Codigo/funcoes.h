@@ -1,9 +1,6 @@
 #ifndef FUNCOES_H
 #define FUNCOES_H
 
-// Liberta uma matriz dinâmica de caracteres com nLin linhas
-void libertaMatriz(struct dados* tab);
-
 // Cria uma matriz dinâmica de caracteres  com nLin linhas e nCol colunas
 // Devolve endereço inicial da matriz
 struct dados* criaMatriz();
@@ -11,24 +8,14 @@ struct dados* criaMatriz();
 int **criarTabVitorias(int dimensao);
 
 // Imprime o conteúdo de uma matriz dinâmica de caracteres
-void mostraMatriz(struct dados *tab);
-
-// Obtém o caracter armazenado na posição (x, y) de uma matriz de caracteres
-char getPos(char **p, int x, int y);
-
-// Coloca o caracter c na posição (x, y) de uma matriz dinâmica de caracteres
-void setPos(char **p, int x, int y, char c);
+void mostraTabuleiroJogo(struct dados *tab);
 
 //Minhas Funcoes
 int printMenuInical();
 
-void printfAjudas();
+void printfMenuAjudas();
 
 int menuInicial();
-
-int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogadas **lista , int *numeroNos , int *flagRecuperar);
-
-int escolhe_jogada(struct dados *tab, int *jogador , int *miniTabuleiro, int *pos);
 
 int minitabuleiroAleatorio(int **tabVitorias , int dimensaotabVitorias);
 
@@ -51,8 +38,6 @@ void insereJogadaFim(struct jogadas **lista , int *numeroNos ,int miniTabuleiro 
 void preencheLista(jogadas *lista  , int miniTabuleiro , int jogador , int posicao , int turno);
 
 void imprimirLista(jogadas *lista);
-
-void freeLista(jogadas* lista);
 
 //Imprimir lista ao contrario usando recursividade
 void imprimirListaAoContrario(jogadas *lista , int *count ,int numero);
