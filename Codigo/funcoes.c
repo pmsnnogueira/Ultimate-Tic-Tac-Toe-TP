@@ -122,8 +122,8 @@ int menuInicial(){
         return opcaoMenu;
 
     if(opcaoMenu == 3){
-        printf("\nSAIR DO JOGO...\n");
-        exit(0);
+        printf("\nA SAIR DO JOGO...\n");
+        return(0);
     }
 
     return (0);

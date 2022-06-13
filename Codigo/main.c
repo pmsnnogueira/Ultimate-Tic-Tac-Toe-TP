@@ -13,7 +13,7 @@ int main(void){
     jogadas *lista = NULL;      //Lista ligada
     int numeroNos = 0;          //Numero de nos na minha lista ligada
     int flagRecomecar = 0;      //Flag para recomeçar o jogo
-    
+    int res;                    //Resultado da funcao
     apagarEcra();  
 
     //Inicializar o initRandom()
@@ -38,15 +38,17 @@ int main(void){
                 //Se quiser utilizar o ficheiro que já foi criado
                 flagRecomecar = 1;
             }
-                //Vou ter de passar isto para dentro da funcao jogar Amigo vai ser mais facil para reconstruir tudo
-                
-                //Se nao quiser correr isto
-            if(jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno > 9*9))
-                printf("\nJogo Empatado\n"); 
 
- 
-            //Guardar a lista ligada num ficheiro de texto
-            guardarFinalJogo(lista);
+            res = jogarAmigo(matriz,&turno , tabVitorias , &lista , &numeroNos , &flagRecomecar);
+
+            if(res == 0 && turno > 9*9)
+                printf("\nJogo Empatado\n"); 
+            if(res == 0 || res == 1){
+                //Guardar a lista ligada num ficheiro de texto
+                guardarFinalJogo(lista);
+
+            }
+                
             putchar('\n');
         break;
 
@@ -58,10 +60,15 @@ int main(void){
                 flagRecomecar = 1;
             }
 
-            if(jogarComputador(matriz , &turno , tabVitorias , &lista , &numeroNos , &flagRecomecar) == 0 && (turno > 9*9))
-                printf("\nJogo Empatado\n"); 
 
-            guardarFinalJogo(lista);
+            res = jogarComputador(matriz,&turno , tabVitorias , &lista , &numeroNos , &flagRecomecar);            
+            if(res == 0 && turno > 9*9)
+                printf("\nJogo Empatado\n"); 
+            if(res == 0 || res == 1){
+                //Guardar a lista ligada num ficheiro de texto
+                guardarFinalJogo(lista);
+
+            }
             putchar('\n');
         break;
     }

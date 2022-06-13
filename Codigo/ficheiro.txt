@@ -33,3 +33,17 @@
 # Jogador: 1       #
 # Posicao: 1       #
 ####################
+
+######JOGADAS######
+# Turno: 6         #
+# Minitabuleiro: 5 #
+# Jogador: 2       #
+# Posicao: 2       #
+####################
+
+######JOGADAS######
+# Turno: 7         #
+# Minitabuleiro: 2 #
+# Jogador: 1       #
+# Posicao: 4       #
+####################

@@ -20,7 +20,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
     if(*flagRecuperar == 1){
         //Recuperar o Jogo
         *lista = lerFicheiro(FICHBINARIO, tab ,turno , tabVitorias , numeroNos , &miniTabuleiro , &jogador , &pos);
-        imprimirLista(*lista);
+        //imprimirLista(*lista);
         //mostraMatriz(tab);
         
         //printf("\n%d %d %d\n",*turno , miniTabuleiro , jogador);
@@ -141,7 +141,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
             return (3);
         }
         if(opcao == 4){
-
+            printf("A SAIR DO JOGO...\n");
             return(4);
         }
     }

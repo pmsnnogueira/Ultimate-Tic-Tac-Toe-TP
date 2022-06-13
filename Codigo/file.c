@@ -55,7 +55,6 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
     printf("\nA ler o jogo guardado em '%s'\n",nome);
 
     fread(numeroJogadas , sizeof(int) , 1 , fp);
-   // printf("%d" , numeroJogadas);
     for(i = 0 ; i < *numeroJogadas ;){
         fread(turno , sizeof(int) , 1 , fp);
         fread(miniTabuleiro , sizeof(int) , 1 , fp);
@@ -64,39 +63,6 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
         
         //Adicionar o no na nova esttrutura
         insereJogadaFim(&lista , &i , *miniTabuleiro , *jogador , *posicao , *turno);
-        /*if(lista == NULL){
-            lista = (jogadas*)malloc(sizeof(lista)); 
-            if(lista == NULL){
-                printf("Erro a alocar memoria para a lista ligada\n");
-                return (NULL);
-            }
-            lista->jogador = *jogador;
-            lista->minitabuleiro = *miniTabuleiro;
-            lista->posicao = *posicao;
-            lista->turno = *turno;
-            lista->prox = NULL;
-           
-        }else{
-            while(aux.prox != NULL){
-                aux = aux.prox;
-            }
-            aux->prox = (jogadas*)malloc(sizeof(lista));
-            if(aux->prox == NULL){
-                //freeLista(lista);                 //Corrigir esta funcao 
-                //Fazer o apagar a lista apagarLista(*lista);
-                printf("Erro a alocar memoria para a lista ligada\n");
-                return(NULL);
-            }
-            aux->prox->jogador = *jogador;
-            aux->prox->minitabuleiro = *miniTabuleiro;
-            aux->prox->posicao = *posicao;
-            aux->prox->turno = *turno;
-            aux->prox->prox = NULL;        
-        }*/
-       // printf("Turno: %d\n" , lista->turno);
-        //printf("\nA ler: %d %d %d %d\n", lista->turno , lista->jogador , lista->minitabuleiro , lista->posicao);
-        //Reconstruir aqui o tabuliro
-        
 
     }
 
@@ -113,17 +79,14 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
         if(verificarLinha(tab , aux->minitabuleiro-1) || verificarColuna(tab , aux->minitabuleiro-1) || verificarDiagonal(tab , aux->minitabuleiro-1) ){
             tabVitorias[(aux->minitabuleiro-1) / 3][(aux->minitabuleiro-1) % 3] = aux->jogador;
             ganharMiniJogo(tab , aux->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
+
+
+            //Aqui tenho de meter para ele verificar a vitoria do jogo, pq ao iniciar pode ser logo vitoria
         }   
         aux = aux->prox;
     }
-
-    
-   // imprimirLista(lista);
-    putchar('\n');
-    putchar('\n');
-    putchar('\n');
     (*turno)++; //preparar o proximo turno
-    printf("Numero jogadas lidas: %d\n",*numeroJogadas);
+    printf("Numero jogadas lidas: %d\n\n",*numeroJogadas);
     fclose(fp); 
 
     //imprimirLista(lista);
