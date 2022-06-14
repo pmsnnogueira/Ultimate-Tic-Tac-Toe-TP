@@ -92,7 +92,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
 
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1) ){
                 tabVitorias[(miniTabuleiro-1) / 3][(miniTabuleiro-1) % 3] = jogador;
-                imprimirTabuleiroVitorias(tabVitorias);
+               // imprimirTabuleiroVitorias(tabVitorias);
                 ganharMiniJogo(tab , miniTabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
                 if(verificarVitoria(tabVitorias) == 1){
                     mostraTabuleiroJogo(tab);

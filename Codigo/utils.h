@@ -15,7 +15,6 @@
 #define FICHBINARIO "fich.bin"
 
 typedef struct dados{
-   // int nTab;
     char **array;
     
 }dados;

@@ -80,8 +80,12 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
             tabVitorias[(aux->minitabuleiro-1) / 3][(aux->minitabuleiro-1) % 3] = aux->jogador;
             ganharMiniJogo(tab , aux->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
 
-
-            //Aqui tenho de meter para ele verificar a vitoria do jogo, pq ao iniciar pode ser logo vitoria
+            if(verificarVitoria(tabVitorias) == 1){
+                    mostraTabuleiroJogo(tab);
+                    escreveResultado(aux->jogador);
+            }
+            else
+                escreveResultadoMini(aux->jogador , aux->minitabuleiro-1);
         }   
         aux = aux->prox;
     }
