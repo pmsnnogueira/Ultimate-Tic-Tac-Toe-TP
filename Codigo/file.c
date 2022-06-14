@@ -22,8 +22,8 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
     fwrite(&numeroJogadas , sizeof(int) , 1 , fp);
     while(aux != NULL){
         fwrite(&aux->turno , sizeof(int) , 1 , fp);
-        fwrite(&aux->minitabuleiro , sizeof(int) , 1 , fp);                 //Vou ter de usar este acho eu, 
-        fwrite(&aux->jogador , sizeof(int) , 1 , fp);                       //Na aula o stor pedeiu para estudarmos o exemplo da lista duplamente ligada
+        fwrite(&aux->minitabuleiro , sizeof(int) , 1 , fp);                 
+        fwrite(&aux->jogador , sizeof(int) , 1 , fp);                       
         fwrite(&aux->posicao , sizeof(int) , 1 , fp);
 
        // printf("A guardar: %d %d %d %d\n",aux->turno , aux->minitabuleiro , aux->jogador , aux->posicao);

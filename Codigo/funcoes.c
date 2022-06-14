@@ -18,7 +18,7 @@ struct dados* criaMatriz(){
         if(p[i].array == NULL){
             printf("Erro na alocação de memória!\n");
             for(f = 0 ; f < i; f++){
-                free(p);                                        //Ver este Free se está bem
+                free(p);                                        
             }
             exit (EXIT_FAILURE);
         }
@@ -29,7 +29,7 @@ struct dados* criaMatriz(){
 
                 for(f = 0 ; f < 9 ; f++){
                     for(l = 0 ; l < 3 ; l++)
-                        free(p[f].array[l]);                        //Ver este Free se está bem
+                        free(p[f].array[l]);                       
                     free(p[f].array);
                 }
                 free(p);
