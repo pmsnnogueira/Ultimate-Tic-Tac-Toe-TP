@@ -47,7 +47,6 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
     int i = 0;
     fp = fopen(nome , "rb");
     if(fp == NULL){
-
         printf("Erro ao abrir o ficheiro\n");
         return NULL;
     }
@@ -70,23 +69,26 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
     while(aux != NULL){
         if(aux->jogador == 1){
             jogadorCaracter = MARCAX;
-            tab[aux->minitabuleiro-1].array[(aux->posicao-1) / 3][(aux->posicao-1) % 3] = 'X';
+            tab[aux->minitabuleiro-1].array[(aux->posicao-1) / 3][(aux->posicao-1) % 3] = MARCAX;
         }else if(aux->jogador == 2){
             jogadorCaracter = MARCAO;
-            tab[aux->minitabuleiro-1].array[(aux->posicao-1) / 3][(aux->posicao-1) % 3] = 'O';
+            tab[aux->minitabuleiro-1].array[(aux->posicao-1) / 3][(aux->posicao-1) % 3] = MARCAO;
         }
 
         if(verificarLinha(tab , aux->minitabuleiro-1) || verificarColuna(tab , aux->minitabuleiro-1) || verificarDiagonal(tab , aux->minitabuleiro-1) ){
             tabVitorias[(aux->minitabuleiro-1) / 3][(aux->minitabuleiro-1) % 3] = aux->jogador;
             ganharMiniJogo(tab , aux->minitabuleiro-1 , jogadorCaracter);          //Apagar o minitabuleiro e meter no meio a letra
-
             if(verificarVitoria(tabVitorias) == 1){
                     mostraTabuleiroJogo(tab);
                     escreveResultado(aux->jogador);
             }
             else
                 escreveResultadoMini(aux->jogador , aux->minitabuleiro-1);
-        }   
+        }else if(verificarEmpate(tab , aux->minitabuleiro-1)){
+            tabVitorias[(aux->minitabuleiro - 1) / 3][(aux->minitabuleiro-1) % 3] = 3;      //3 siginifica empate
+            ganharMiniJogo(tab , aux->minitabuleiro-1 , 'E');
+            printf("\nMinitabuleiro %d Empatado\n" , aux->minitabuleiro);
+        } 
         aux = aux->prox;
     }
     (*turno)++; //preparar o proximo turno

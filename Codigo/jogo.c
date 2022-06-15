@@ -86,7 +86,6 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
                     
                 }
             }   //Se não for o primeiro turno
-
             escolhe_jogada(tab , &jogador , &miniTabuleiro , &pos);
             insereJogadaFim(lista , numeroNos ,miniTabuleiro , jogador , pos , *turno);
 
@@ -101,7 +100,11 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
                 }
                 else
                     escreveResultadoMini(jogador , miniTabuleiro-1);
-            }  
+            }else if(verificarEmpate(tab , miniTabuleiro-1)){
+                tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] = 3;      //3 siginifica empate
+                ganharMiniJogo(tab , miniTabuleiro-1 , 'E');
+                printf("Minitabuleiro %d Empatado\n" , miniTabuleiro);
+            }
             
             if(tabVitorias[(miniTabuleiro-1)/3][(miniTabuleiro-1)%3] != 0 || tabVitorias[(pos-1)/3][(pos-1)%3]){         //verificar se o minitabuleiro que vai a seguir nao é um que já está ganho se for meter um aleatorio
                 miniTabuleiro = minitabuleiroAleatorio(tabVitorias , 9);

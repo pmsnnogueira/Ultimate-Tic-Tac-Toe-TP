@@ -226,6 +226,18 @@ int verificarDiagonal(struct dados *tab , int miniTabuleiro){
    return (0);
 }
 
+//Verificar empate, só é considerado empate quando o minitabuleiro está totalmente preenchido
+int verificarEmpate(struct dados *tab , int miniTabuleiro){
+    int l , c;
+    for(l = 0 ; l < 3 ; l++){
+        for(c = 0 ; c < 3 ; c++){
+            if(tab[miniTabuleiro].array[l][c] == '_')
+                return (0);
+        }
+    }
+    return (1);
+}
+
 //Verificar se algum dos jogadores ganhou o jogo completo
 int verificarVitoria(int **tabVitorias){
 
@@ -233,7 +245,7 @@ int verificarVitoria(int **tabVitorias){
 
     //Verificar Linhas
     for(i = 0; i < 3; i++)
-    if(tabVitorias[i][0] != 0){
+    if(tabVitorias[i][0] != 0 && tabVitorias[i][0] != 3){
         for(j = 0; j < 3-1 && tabVitorias[i][j] == tabVitorias[i][j+1]; j++)
             ;
         if(j == 3-1)
@@ -242,7 +254,7 @@ int verificarVitoria(int **tabVitorias){
 
     //Verificar Colunas
     for(i = 0 ; i < 3 ; i++)        
-    if(tabVitorias[0][i] != 0){
+    if(tabVitorias[0][i] != 0 && tabVitorias[0][i] != 3){
         for(j = 0 ; j < 3-1 && tabVitorias[j][i] == tabVitorias[j+1][i]; j++)
             ;
         if(j == 3-1)
@@ -250,11 +262,11 @@ int verificarVitoria(int **tabVitorias){
     }
 
     //Verificar Diagonal
-     if(tabVitorias[0][0] != 0 &&                
+     if(tabVitorias[0][0] != 0 && tabVitorias[0][0] != 3 &&               
     tabVitorias[0][0] == tabVitorias[1][1]  && tabVitorias[0][0] == tabVitorias[2][2])         
         return (1); 
     
-    if(tabVitorias[0][2] != 0 &&              
+    if(tabVitorias[0][2] != 0 && tabVitorias[0][2] !=3 &&        
     tabVitorias[0][2] == tabVitorias[1][1] &&         
     tabVitorias[0][2] == tabVitorias[2][0])           
         return (1);
@@ -334,6 +346,7 @@ void imprimirListaAoContrario(jogadas *lista , int *count ,int numero){
 
     if(lista == NULL)
         return ;
+        
     imprimirListaAoContrario(lista->prox , count , numero);
 
     (*count)++;
