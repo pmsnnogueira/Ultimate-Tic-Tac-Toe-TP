@@ -195,7 +195,6 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
     int jogador = 1;
     char jogadorCaracter = MARCAX;
     int dimensao = 3;
-    int posAleatoriaBot;
     int count = 0;
 
     //int ganhou;
@@ -219,10 +218,11 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
         }
         
         printf("\n[TURNO %d]",*turno);
-        printf("\n#### Jogar VS Computador ####\n");
+        printf("\n###### Jogar com Amigo ######\n");
         printf("# 1 - Inserir peça          #\n");
         printf("# 2 - Ver Jogadas           #\n");
-        printf("# 3 - Pause                 #\n");
+        printf("# 3 - Salvar jogo e SAIR    #\n");
+        printf("# 4 - SAIR sem salvar       #\n");
         printf("#############################\n");
         printf("Escolha: ");
 
@@ -230,9 +230,9 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
         string[strlen(string)-1] = '\0';
         opcao = atoi(string);
         putchar('\n');   
-
-        if(opcao < 0 && opcao > 3)
-            printf("\nEscolha uma opcao entre (1 e 3)");
+        
+        if(opcao < 0 && opcao > 4)
+            printf("\nEscolha uma opcao entre (1 e 4)"); 
 
         if(opcao == 1){
             if(*turno == 1 && *flagRecuperar == 0){
@@ -293,9 +293,9 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
             (*turno)++;
 
             //Agora é o Bot a jogar
-            posAleatoriaBot = botAleatorio(tab , miniTabuleiro-1 , 9);        //PosAleatoria para o bot jogar
+            pos = botAleatorio(tab , miniTabuleiro-1 , 9);        //PosAleatoria para o bot jogar
 
-            tab[miniTabuleiro-1].array[(posAleatoriaBot - 1) / dimensao][(posAleatoriaBot - 1) % dimensao] = 'O';
+            tab[miniTabuleiro-1].array[(pos - 1) / dimensao][(pos - 1) % dimensao] = 'O';
             insereJogadaFim(lista , numeroNos , miniTabuleiro , jogador , pos , *turno);   //Inserir na lista o Nó da jogada
         
             if(verificarLinha(tab , miniTabuleiro-1) || verificarColuna(tab , miniTabuleiro-1) || verificarDiagonal(tab , miniTabuleiro-1)){ 
@@ -325,7 +325,6 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
             *flagRecuperar = 0;
         }
         if(opcao == 2){
-            //Imprimir Lista 
             printf("\nImprimir Lista\n");
             printf("Escolha o numero de jogadas a visualizar: ");
             fgets(string,sizeof(string)-1,stdin);
@@ -344,9 +343,9 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
             return (3);
         }
         if(opcao == 4){
-
+            printf("A SAIR DO JOGO...\n");
             return(4);
-        } 
+        }
     }
 
     *flagRecuperar = 0;

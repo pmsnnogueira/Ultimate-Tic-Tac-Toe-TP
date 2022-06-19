@@ -32,6 +32,7 @@ int gravarFicheiro(jogadas *lista , int numeroJogadas, char *nome){
 
     printf("Jogo guardado com sucesso com %d jogadas\n",numeroJogadas);
     fclose(fp);
+    //imprimirLista(lista);
     
     return (0);
 }
@@ -64,6 +65,7 @@ jogadas* lerFicheiro(char *nome , struct dados *tab, int *turno , int **tabVitor
         insereJogadaFim(&lista , &i , *miniTabuleiro , *jogador , *posicao , *turno);
 
     }
+    //imprimirLista(lista);
 
     aux = lista;
     while(aux != NULL){

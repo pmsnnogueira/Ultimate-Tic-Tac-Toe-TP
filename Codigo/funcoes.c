@@ -10,31 +10,32 @@ struct dados* criaMatriz(){
 
     p = malloc(sizeof(dados) * 9);
     if(p == NULL)
-        return (NULL);
+        exit(EXIT_FAILURE);
 
 
     for(i = 0 ; i < 9 ; i++){
         p[i].array = malloc(sizeof(char *) * 3);     //Alocar linhas para cada minitabuleiro
         if(p[i].array == NULL){
-            printf("Erro na alocação de memória!\n");
+            printf("Erro na alocação de memória!\n");   //Libertar a memoria ate ao erro
             for(f = 0 ; f < i; f++){
-                free(p);                                        
+                free(p[f].array);                                        
             }
-            exit (EXIT_FAILURE);
+            free(p);
+            exit(EXIT_FAILURE);
         }
         for(a = 0 ; a < 3 ; a++){
             p[i].array[a] = malloc(sizeof(char *) *3);  //Alocar Colunas para cada minitabuleiro
             if(p[i].array[a] == NULL){
                 printf("Erro na alocação de memoria!\n");
 
-                for(f = 0 ; f < 9 ; f++){
-                    for(l = 0 ; l < 3 ; l++)
+                for(f = 0 ; f < i ; f++){
+                    for(l = 0 ; l < a ; l++)
                         free(p[f].array[l]);                       
                     free(p[f].array);
                 }
                 free(p);
 
-                exit (EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
         }
     }
@@ -64,7 +65,11 @@ int **criarTabVitorias(int dimensao){
         tab[i] = malloc(sizeof(int) * dimensao);
         if(tab[i] == NULL){
             printf("Erro na alocacao de memoria no tabuleiro Vitorias\n");
+
+            for(int k = 0 ; k < i ; k++)
+                free(tab[k]);
             free(tab);
+            
             exit(EXIT_FAILURE);
         }
 
