@@ -38,7 +38,7 @@ int jogarAmigo(struct dados *tab , int *turno , int **tabVitorias ,struct jogada
 
         //imprimirLista(*lista);
     }
-    while(*turno < 9 * 9){
+    while(*turno <= 9 * 9){
         if(*turno != 1){
                 mostraTabuleiroJogo(tab);
         }
@@ -212,7 +212,7 @@ int jogarComputador(struct dados *tab , int *turno , int **tabVitorias ,struct j
         else
             jogador = 1;
     }
-    while(1){
+    while(*turno <= 9 * 9){
         if(*turno != 1){
             mostraTabuleiroJogo(tab);
         }

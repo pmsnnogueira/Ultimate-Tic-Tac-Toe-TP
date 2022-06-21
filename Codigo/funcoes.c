@@ -311,8 +311,7 @@ void insereJogadaFim(struct jogadas **lista , int *numeroNos, int miniTabuleiro 
         }
         aux->prox = (jogadas*)malloc(sizeof(lista));
         if(aux->prox == NULL){
-            //freeLista(lista);                 //Corrigir esta funcao 
-            //Fazer o apagar a lista apagarLista(*lista);
+
             printf("Erro a alocar memoria para a lista ligada\n");
             return;
         }
