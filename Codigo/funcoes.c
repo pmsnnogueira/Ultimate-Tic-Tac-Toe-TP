@@ -11,7 +11,7 @@ struct dados* criaMatriz(){
     p = malloc(sizeof(dados) * 9);
     if(p == NULL)
         exit(EXIT_FAILURE);
-
+                                                                //Fazer uma funcao para libertas quando der erro!!!
 
     for(i = 0 ; i < 9 ; i++){
         p[i].array = malloc(sizeof(char *) * 3);     //Alocar linhas para cada minitabuleiro
@@ -218,6 +218,10 @@ int verificarColuna(struct dados *tab , int miniTabuleiro){
 
 int verificarDiagonal(struct dados *tab , int miniTabuleiro){
 
+    int i = 0;
+    int j = 0;
+    int a = 0;
+
     if(tab[miniTabuleiro].array[0][0] != '_' &&                                 //_
     tab[miniTabuleiro].array[0][0] == tab[miniTabuleiro].array[1][1] &&         //  _
     tab[miniTabuleiro].array[0][0] == tab[miniTabuleiro].array[2][2])           //     _
@@ -227,6 +231,18 @@ int verificarDiagonal(struct dados *tab , int miniTabuleiro){
     tab[miniTabuleiro].array[0][2] == tab[miniTabuleiro].array[1][1] &&         //   _
     tab[miniTabuleiro].array[0][2] == tab[miniTabuleiro].array[2][0])           // _
         return (1);
+
+
+    /*Ou*/
+    /*for (i = 1; i < 3; i++){
+        if(tab[miniTabuleiro].array[i][i] == tab[miniTabuleiro].array[i-1][i-1] && tab[miniTabuleiro].array[i][i]!='_')
+            a++;     
+        
+        if(tab[miniTabuleiro].array[i][3-1-i] == tab[miniTabuleiro].array[i-1][3-i] && tab[miniTabuleiro].array[i][3-1-i]!='_')
+            j++;           
+    }
+    if(a == 3 || j == 3)
+        return (1);*/
 
    return (0);
 }
@@ -275,8 +291,8 @@ int verificarVitoria(int **tabVitorias){
     tabVitorias[0][2] == tabVitorias[1][1] &&         
     tabVitorias[0][2] == tabVitorias[2][0])           
         return (1);
-    
 
+                                    //Fazer isto mas em ciclo
 
     return (0);
 }
